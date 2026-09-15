@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+
+{% block full_content %}
+<div data-testid="contact-page" style="background:var(--bc-stone-950);">
+
+  <section style="padding:9rem 0 3rem;">
+    <div class="bc-container">
+      <p class="bc-overline">Reach the chowk</p>
+      <h1 class="bc-h1 bc-max-w-4xl">Say hello. <br><span class="bc-italic-amber">Or just drop by.</span></h1>
+    </div>
+  </section>
+
+  <section style="padding-bottom:5rem;">
+    <div class="bc-container" style="display:grid;grid-template-columns:1fr;gap:2.5rem;">
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">Visit</p><p class="font-display" style="font-size:1.2rem;margin-top:.4rem;">Khau Galli Lane, Lower Parel, Mumbai 400013</p></div>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div><p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">Hours</p><p class="font-display" style="font-size:1.2rem;margin-top:.4rem;white-space:pre-line;">Tue–Sat: 4 PM – 1 AM
+Sun: 12 PM – 11 PM
+Mon: Open mic only, 7–11 PM</p></div>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <div><p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">Call</p><p class="font-display" style="font-size:1.2rem;margin-top:.4rem;">+91 98200 00000</p></div>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          <div><p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">Email</p><p class="font-display" style="font-size:1.2rem;margin-top:.4rem;white-space:pre-line;">hello@bombaychowkk.in
+events@bombaychowkk.in</p></div>
+        </div>
+      </div>
+
+      <form method="post" data-testid="contact-form" style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:2.5rem;">
+        {% csrf_token %}
+        <h2 class="font-display" style="font-size:2rem;">Drop a message.</h2>
+        {% if form.non_field_errors %}<div class="bc-alert error bc-mt-4">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="bc-grid bc-grid-2 bc-mt-6">
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> Name</label>
+            <input class="bc-input" type="text" name="name" value="{{ form.name.value|default:'' }}" required data-testid="contact-name">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg> Email</label>
+            <input class="bc-input" type="email" name="email" value="{{ form.email.value|default:'' }}" required data-testid="contact-email">
+          </div>
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label">Subject (optional)</label>
+          <input class="bc-input" type="text" name="subject" value="{{ form.subject.value|default:'' }}" data-testid="contact-subject">
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Message</label>
+          <textarea class="bc-textarea" name="message" rows="6" required data-testid="contact-message">{{ form.message.value|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="bc-btn bc-btn-primary bc-btn-block bc-mt-6" data-testid="contact-submit-btn">Send message</button>
+      </form>
+    </div>
+  </section>
+
+  <section data-testid="faq-section" class="bc-section-lg" style="background:rgba(28,25,23,.3);border-top:1px solid var(--bc-white-10);">
+    <div class="bc-container" style="max-width:56rem;">
+      <p class="bc-overline">FAQ</p>
+      <h2 class="bc-h2 bc-mb-10">Things people <span class="bc-italic-amber">often ask</span>.</h2>
+
+      <div style="border-top:1px solid var(--bc-white-10);">
+        {% for faq in "12345678" %}
+        <div style="border-bottom:1px solid var(--bc-white-10);">
+          <button type="button" class="bc-faq-trigger" data-bc-faq-trigger data-testid="faq-trigger-{{ forloop.counter0 }}" style="width:100%;text-align:left;background:none;border:none;color:var(--bc-stone-100);font-family:'Playfair Display',serif;font-size:1.15rem;padding:1.4rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+            <span>
+              {% if forloop.counter == 1 %}Is there an entry fee?
+              {% elif forloop.counter == 2 %}What are the timings?
+              {% elif forloop.counter == 3 %}Is it family friendly?
+              {% elif forloop.counter == 4 %}Is parking available?
+              {% elif forloop.counter == 5 %}How do I book a private event?
+              {% elif forloop.counter == 6 %}How can I become a stall partner?
+              {% elif forloop.counter == 7 %}Is the food hygienic and safe?
+              {% else %}Do you have vegetarian and Jain options?
+              {% endif %}
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" data-bc-faq-icon style="flex-shrink:0;transition:transform .25s ease;"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="bc-faq-panel" data-bc-faq-panel style="display:none;padding-bottom:1.4rem;color:var(--bc-stone-400);line-height:1.7;">
+            {% if forloop.counter == 1 %}Entry is free on all days except select ticketed events (Bollywood Night, headliner performances). Food and drinks are paid per stall.
+            {% elif forloop.counter == 2 %}Tuesday to Sunday: 4 PM – 1 AM. Sundays open at noon for the Family Mela. Closed Mondays for restocking (except open mic evenings, 7–11 PM).
+            {% elif forloop.counter == 3 %}Absolutely. Sundays are designed for families with kids. Weekends remain inclusive — no over-21 sections.
+            {% elif forloop.counter == 4 %}Yes. Valet parking and a dedicated multi-level lot adjacent to the chowk. Two-wheeler parking is free for community members.
+            {% elif forloop.counter == 5 %}Use our Partner With Us form or write to events@bombaychowkk.in. We host birthdays, corporate offsites and shaadi sangeets.
+            {% elif forloop.counter == 6 %}Apply via the Partner With Us page. Home chefs, brand pop-ups and craftspeople are welcome — we curate quarterly.
+            {% elif forloop.counter == 7 %}All stalls are FSSAI certified. We do daily kitchen audits and publish hygiene scorecards on the chowk noticeboard.
+            {% else %}Of course. Most stalls offer veg menus, and we have dedicated Jain and gluten-free zones marked on the chowk map.
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('[data-bc-faq-trigger]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var panel = btn.nextElementSibling;
+      var icon = btn.querySelector('[data-bc-faq-icon]');
+      var isOpen = panel.style.display === 'block';
+      panel.style.display = isOpen ? 'none' : 'block';
+      icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+  });
+</script>
+
+<style>
+  @media (min-width: 1024px) { section .bc-container[style*="grid-template-columns:1fr"] { grid-template-columns: 5fr 7fr; } }
+</style>
+{% endblock %}

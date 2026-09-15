@@ -1,0 +1,27 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Wallet Items{% endblock %}
+{% block dashboard_title %}Wallet Items{% endblock %}
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Wallet Redeemable Items</h2>
+  <a href="{% url 'dashboard:wallet_item_add' %}" class="btn btn-primary">+ Add Item</a>
+</div>
+<table class="table bg-white">
+  <thead><tr><th>Name</th><th>Points Required</th><th>Active</th><th></th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.points_required }}</td>
+      <td>{% if item.is_active %}Yes{% else %}No{% endif %}</td>
+      <td>
+        <a href="{% url 'dashboard:wallet_item_edit' item.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <a href="{% url 'dashboard:wallet_item_delete' item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this item?')">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4" class="text-muted">No wallet items yet. Add one, like 'Free Chai' @ 1000 points.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

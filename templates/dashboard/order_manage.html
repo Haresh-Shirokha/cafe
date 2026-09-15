@@ -1,0 +1,84 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Manage Order{% endblock %}
+{% block dashboard_title %}Manage Order{% endblock %}
+{% block dashboard_content %}
+<h2>Order {{ order.bill_number }}</h2>
+<p class="mb-1">Table Number: <strong>{{ order.table_number|default:"—" }}</strong></p>
+<p class="mb-1">Customer: {{ order.user.username }} ({{ order.user.email }}{% if order.user.phone %}, {{ order.user.phone }}{% endif %})</p>
+
+<div class="d-flex gap-3 flex-wrap mb-3">
+  {% if order.status == "delivered" %}
+    <span class="badge bg-success">Delivered in {{ order.delivery_duration_display }}</span>
+  {% else %}
+    <span>Ordered: <span class="order-timer fw-bold text-danger" data-created="{{ order.created_at.isoformat }}">--</span></span>
+  {% endif %}
+
+  {% if order.paid_at %}
+    <span class="badge bg-primary">Total Table Time: {{ order.payment_duration_display }}</span>
+  {% endif %}
+</div>
+
+<table class="table bg-white">
+  <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+  <tbody>
+  {% for item in order.items.all %}
+    <tr><td>{{ item.item_name }}{% if item.addons_summary %}<br><span class="small text-muted">{{ item.addons_summary }}</span>{% endif %}</td><td>₹{{ item.price }}</td><td>{{ item.quantity }}</td><td>₹{{ item.subtotal }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h4>Total: ₹{{ order.total_amount }}</h4>
+
+<div class="card p-3 mb-3">
+  <h5>Bill Payment</h5>
+  {% if order.paid_at %}
+    <p class="text-success mb-0">
+      Bill has been paid — {{ order.paid_at|date:"d M Y, h:i A" }} via <strong>{{ order.payment_detail.get_method_display }}</strong>.
+    </p>
+    {% if order.payment_detail.method == "cash" %}
+      <p class="text-muted small mb-0">Cash Received: ₹{{ order.payment_detail.cash_received }} ({{ order.payment_detail.cash_received_breakdown }})</p>
+      {% if order.payment_detail.change_given %}
+        <p class="text-muted small mb-0">Change Given: ₹{{ order.payment_detail.change_given }} ({{ order.payment_detail.change_given_breakdown }})</p>
+      {% endif %}
+    {% endif %}
+    <p class="text-success mb-0 mt-2">{{ order.reward_points }} points have been credited to the customer's wallet (current total: {{ order.user.points }} pts)</p>
+  {% else %}
+    <p class="text-muted mb-2">Once the bill is marked paid, the customer will get <strong>{{ order.reward_points }} points</strong> (current wallet balance: {{ order.user.points }} pts)</p>
+    <a href="{% url 'dashboard:mark_bill_paid' order.id %}" class="btn btn-success btn-sm">Mark Bill Paid</a>
+  {% endif %}
+</div>
+
+<div class="card p-3 mb-3">
+  <h5>Invoice (GST)</h5>
+  {% if order.invoice %}
+    <p class="mb-2">
+      {{ order.invoice.invoice_number }} — Subtotal ₹{{ order.invoice.subtotal }},
+      CGST ₹{{ order.invoice.cgst_amount }}, SGST ₹{{ order.invoice.sgst_amount }},
+      <strong>Total ₹{{ order.invoice.total_amount }}</strong>
+    </p>
+    {% if order.invoice.emailed_at %}
+      <p class="text-success mb-2">You've already emailed this invoice to the customer — {{ order.invoice.emailed_at|date:"d M Y, h:i A" }} ({{ order.invoice.emailed_count }}x sent)</p>
+    {% endif %}
+    <div class="d-flex gap-2">
+      <a href="{% url 'invoices:detail' order.id %}" class="btn btn-outline-dark btn-sm" target="_blank">View Invoice</a>
+      <form method="post" action="{% url 'dashboard:email_invoice' order.id %}">
+        {% csrf_token %}
+        <button class="btn btn-primary btn-sm">Email Invoice to Customer</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="text-muted">Invoice could not be generated.</p>
+  {% endif %}
+</div>
+
+<div class="card p-3">
+  <h5>Order Status</h5>
+  <div class="d-flex gap-2 flex-wrap">
+    {% for key, label in status_choices %}
+      <form method="post" action="{% url 'dashboard:update_status' order.id key %}">
+        {% csrf_token %}
+        <button class="btn btn-sm {% if order.status == key %}btn-dark{% else %}btn-outline-dark{% endif %}">{{ label }}</button>
+      </form>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Orders{% endblock %}
+{% block dashboard_title %}Orders{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">All Orders</h2>
+<div class="mb-3">
+  <a href="{% url 'dashboard:order_list' %}" class="btn btn-sm btn-outline-dark {% if not active_status %}active{% endif %}">All</a>
+  {% for key, label in status_choices %}
+    <a href="?status={{ key }}" class="btn btn-sm btn-outline-dark {% if active_status == key %}active{% endif %}">{{ label }}</a>
+  {% endfor %}
+</div>
+<table class="table bg-white">
+  <thead><tr><th>Bill</th><th>Table</th><th>User</th><th>Status</th><th>Time Since Order</th><th>Paid?</th><th>Total</th><th></th></tr></thead>
+  <tbody>
+  {% for order in orders %}
+    <tr>
+      <td>{{ order.bill_number }}</td>
+      <td>{{ order.table_number|default:"—" }}</td>
+      <td>{{ order.user.username }}</td>
+      <td>{{ order.get_status_display }}</td>
+      <td>
+        {% if order.status == "delivered" %}
+          <span class="badge bg-success">{{ order.delivery_duration_display }}</span>
+        {% else %}
+          <span class="order-timer fw-bold text-danger" data-created="{{ order.created_at.isoformat }}">--</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if order.paid_at %}
+          <span class="badge bg-success">Paid</span>
+        {% else %}
+          <span class="badge bg-secondary">Pending</span>
+        {% endif %}
+      </td>
+      <td>₹{{ order.total_amount }}</td>
+      <td><a href="{% url 'dashboard:order_manage' order.id %}" class="btn btn-sm btn-outline-secondary">Manage</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

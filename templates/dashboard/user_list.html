@@ -1,0 +1,17 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Users{% endblock %}
+{% block dashboard_title %}Users{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">Users</h2>
+<table class="table bg-white">
+  <thead><tr><th>Username</th><th>Email</th><th>Points</th><th>Orders</th><th>Joined</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td><td>{{ u.email }}</td><td>{{ u.points }}</td>
+      <td>{{ u.orders_count }}</td><td>{{ u.created_at|date:"d M Y" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

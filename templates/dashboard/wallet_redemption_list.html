@@ -1,0 +1,24 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Wallet Redemptions{% endblock %}
+{% block dashboard_title %}Wallet Redemptions{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">Wallet Redemptions</h2>
+<p class="text-muted">When a customer shows their redemption code at the counter, hand over the item and click "Mark Fulfilled".</p>
+<table class="table bg-white">
+  <thead><tr><th>User</th><th>Item</th><th>Points Spent</th><th>Code</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for r in redemptions %}
+    <tr>
+      <td>{{ r.user.username }}</td>
+      <td>{{ r.item.name|default:"—" }}</td>
+      <td>{{ r.points_spent }}</td>
+      <td><code>{{ r.redemption_code }}</code></td>
+      <td>{% if r.fulfilled %}<span class="badge bg-success">Fulfilled</span>{% else %}<span class="badge bg-secondary">Pending</span>{% endif %}</td>
+      <td>{% if not r.fulfilled %}<a href="{% url 'dashboard:wallet_redemption_fulfil' r.id %}" class="btn btn-sm btn-success">Mark Fulfilled</a>{% endif %}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6" class="text-muted">No redemptions yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

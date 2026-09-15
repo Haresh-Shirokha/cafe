@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block extra_head %}
+{% if is_admin_view %}<meta http-equiv="refresh" content="30">{% endif %}
+{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm p-4 text-center">
+      {% if user.picture %}
+        <img src="{{ user.picture.url }}" class="rounded-circle mx-auto mb-3" style="width:120px;height:120px;object-fit:cover;">
+      {% else %}
+        <div class="rounded-circle bg-secondary text-white mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:120px;height:120px;font-size:2rem;">
+          {{ user.username|slice:":1"|upper }}
+        </div>
+      {% endif %}
+      <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+      <p class="text-muted mb-1">@{{ user.username }}</p>
+      <p class="mb-1">{{ user.email }}</p>
+      {% if is_admin_view %}
+        <span class="badge bg-dark fs-6 py-2 px-3">Admin Account</span>
+        <p class="small text-muted mt-2">{{ pending_orders }} order(s) currently pending</p>
+      {% else %}
+        <span class="badge bg-primary fs-6 py-2 px-3">Wallet: {{ user.points }} points</span>
+        <p class="small text-muted mt-2">Referral code: <strong>{{ user.referral_code }}</strong></p>
+      {% endif %}
+
+      <hr>
+      <form method="post" enctype="multipart/form-data" class="text-start">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-outline-primary w-100" type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    {% if is_admin_view %}
+      <!-- ================= ADMIN: LIVE ORDER NOTIFICATION FEED ================= -->
+      <div class="card shadow-sm p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Live Orders — All Users</h5>
+          <a href="{% url 'dashboard:order_list' %}" class="btn btn-sm btn-outline-dark">Manage All Orders</a>
+        </div>
+        <p class="text-muted small">This page automatically refreshes every 30 seconds.</p>
+
+        {% if recent_orders %}
+          <table class="table table-sm">
+            <thead><tr><th>User</th><th>Bill</th><th>Table</th><th>Status</th><th>Time</th><th>Total</th><th></th></tr></thead>
+            <tbody>
+            {% for order in recent_orders %}
+              <tr>
+                <td>{{ order.user.username }}</td>
+                <td>{{ order.bill_number }}</td>
+                <td>{{ order.table_number|default:"—" }}</td>
+                <td>
+                  <span class="badge {% if order.status == 'delivered' %}bg-success{% elif order.status == 'queue' %}bg-secondary{% else %}bg-warning text-dark{% endif %}">
+                    {{ order.get_status_display }}
+                  </span>
+                </td>
+                <td>
+                  {% if order.status == "delivered" %}
+                    <span class="text-success small">Delivered in {{ order.delivery_duration_display }}</span>
+                  {% else %}
+                    <span class="order-timer text-danger fw-bold small" data-created="{{ order.created_at.isoformat }}">--</span>
+                  {% endif %}
+                </td>
+                <td>₹{{ order.total_amount }}</td>
+                <td><a href="{% url 'dashboard:order_manage' order.id %}" class="btn btn-sm btn-outline-secondary">Manage</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="text-muted">No orders have come in yet.</p>
+        {% endif %}
+      </div>
+    {% else %}
+      <!-- ================= NORMAL USER: MY ORDERS + REWARDS ================= -->
+      <div class="card shadow-sm p-4 mb-4">
+        <h5>Order History</h5>
+        {% if orders %}
+          <table class="table">
+            <thead><tr><th>Bill</th><th>Table</th><th>Status</th><th>Total</th><th>Invoice</th><th></th></tr></thead>
+            <tbody>
+            {% for order in orders %}
+              <tr>
+                <td>{{ order.bill_number }}</td>
+                <td>{{ order.table_number|default:"—" }}</td>
+                <td>
+                  <span class="badge bg-info text-dark">{{ order.get_status_display }}</span>
+                  {% if order.paid_at %}<span class="badge bg-success">Paid</span>{% endif %}
+                </td>
+                <td>₹{{ order.total_amount }}</td>
+                <td>
+                  {% if order.invoice.emailed_at %}
+                    <span class="badge bg-success" title="Emailed on {{ order.invoice.emailed_at|date:'d M Y, h:i A' }}">Emailed</span>
+                  {% else %}
+                    <span class="badge bg-secondary">Not emailed</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'orders:detail' order.id %}" class="btn btn-sm btn-outline-secondary">View</a>
+                  <a href="{% url 'invoices:detail' order.id %}" class="btn btn-sm btn-outline-dark">Invoice</a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="text-muted">No orders yet.</p>
+        {% endif %}
+      </div>
+
+      <div class="card shadow-sm p-4">
+        <h5>Reward History</h5>
+        {% if scratch_cards %}
+          <div class="row g-3">
+            {% for card in scratch_cards %}
+              <div class="col-md-6">
+                <div class="scratch-card p-3">
+                  <p class="mb-1 small">Order: {{ card.order.bill_number }}</p>
+                  {% if card.revealed %}
+                    <h6 class="mb-1">{{ card.reward_label|default:"—" }}</h6>
+                    <p class="small mb-0">Code: {{ card.reward_code|default:"—" }}</p>
+                    {% if card.nostalgia %}<p class="small mb-0 fst-italic">{{ card.nostalgia.title }}</p>{% endif %}
+                  {% elif card.reward %}
+                    <p class="mb-2">Scratch card ready!</p>
+                    <a href="{% url 'rewards:reveal' card.id %}" class="btn btn-light btn-sm">Scratch & Reveal</a>
+                  {% else %}
+                    <p class="mb-0">Reward is being assigned...</p>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">No rewards yet.</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if show_reward_popup %}
+<div class="modal fade" id="rewardExpiryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reward Expiry Alert</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        {% if already_expired %}
+          <p class="text-danger">{{ already_expired|length }} of your scratch card(s) have expired because they weren't revealed in time.</p>
+        {% endif %}
+        {% if expiring_soon %}
+          <p class="text-warning">
+            {{ expiring_soon|length }} of your scratch card(s) are about to expire!
+            {% for c in expiring_soon %}
+              <br>Order {{ c.order.bill_number }} — {{ c.days_left }} day(s) left
+            {% endfor %}
+          </p>
+          <p class="small text-muted">Go to "Reward History" below and reveal them now.</p>
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new bootstrap.Modal(document.getElementById("rewardExpiryModal")).show();
+  });
+</script>
+{% endif %}
+{% endblock %}

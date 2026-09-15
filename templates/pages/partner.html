@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Partner With Us{% endblock %}
+
+{% block full_content %}
+<div data-testid="partner-page" style="background:var(--bc-stone-950);">
+
+  <section class="bc-relative bc-overflow-hidden" style="padding:9rem 0 5rem;">
+    <div class="bc-media-cover"><img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/fa79ebd5d6cb5e18eb17aafd67cb3506790d84835869131892fb7b3d680e646e.png" alt="" style="opacity:.25;"></div>
+    <div class="bc-overlay-b"></div>
+    <div class="bc-relative bc-container">
+      <p class="bc-overline">Partner with us</p>
+      <h1 class="bc-h1 bc-max-w-4xl">Build the chowk <br><span class="bc-italic-amber">with us</span>.</h1>
+      <p class="bc-lead bc-mt-8 bc-max-w-2xl">We're curating Mumbai's most loved food village. If you cook, perform, organize or represent a brand that fits the chowk — we want to hear from you.</p>
+    </div>
+  </section>
+
+  <section data-testid="partner-types" style="padding:4rem 0;">
+    <div class="bc-container">
+      <div class="bc-grid bc-grid-4">
+        <button type="button" data-bc-partner-type="vendor" class="bc-partner-type-btn active" style="text-align:left;border:1px solid var(--bc-amber-500);background:var(--bc-amber-500-10);padding:1.75rem;cursor:pointer;transition:all .3s ease;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+          <h3 class="font-display bc-mt-4" style="font-size:1.4rem;">Food Vendor / Home Chef</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">A stall or pop-up under the chowk lights.</p>
+        </button>
+        <button type="button" data-bc-partner-type="artist" class="bc-partner-type-btn" style="text-align:left;border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;cursor:pointer;transition:all .3s ease;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <h3 class="font-display bc-mt-4" style="font-size:1.4rem;">Artist / Performer</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Open mic, theatre, music, dance, comedy.</p>
+        </button>
+        <button type="button" data-bc-partner-type="event-organizer" class="bc-partner-type-btn" style="text-align:left;border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;cursor:pointer;transition:all .3s ease;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>
+          <h3 class="font-display bc-mt-4" style="font-size:1.4rem;">Event Organizer</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Curate a themed evening or festival week.</p>
+        </button>
+        <button type="button" data-bc-partner-type="sponsor" class="bc-partner-type-btn" style="text-align:left;border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;cursor:pointer;transition:all .3s ease;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          <h3 class="font-display bc-mt-4" style="font-size:1.4rem;">Brand / Sponsor</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Activations, integrations, banner partnerships.</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:4rem 0;background:rgba(28,25,23,.3);">
+    <div class="bc-container" style="max-width:56rem;">
+      <h2 class="bc-h2" style="margin-bottom:.5rem;">Tell us about you.</h2>
+      <p class="bc-muted bc-mb-6">We review every application personally. Expect a response within 48 hours.</p>
+
+      <form method="post" data-testid="partner-form" style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);backdrop-filter:blur(6px);padding:2.5rem;">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="bc-alert error bc-mb-4">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="bc-grid bc-grid-2">
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> Your name</label>
+            <input class="bc-input" type="text" name="name" value="{{ form.name.value|default:'' }}" required data-testid="partner-name">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg> Email</label>
+            <input class="bc-input" type="email" name="email" value="{{ form.email.value|default:'' }}" required data-testid="partner-email">
+          </div>
+        </div>
+        <div class="bc-grid bc-grid-2 bc-mt-4">
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> Phone (optional)</label>
+            <input class="bc-input" type="text" name="phone" value="{{ form.phone.value|default:'' }}" data-testid="partner-phone">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg> Brand / Stage name</label>
+            <input class="bc-input" type="text" name="brand_name" value="{{ form.brand_name.value|default:'' }}" data-testid="partner-brand">
+          </div>
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label">Partner type</label>
+          <select class="bc-select" name="partner_type" data-bc-partner-select data-testid="partner-type-select">
+            <option value="vendor">Food Vendor / Home Chef</option>
+            <option value="artist">Artist / Performer</option>
+            <option value="event-organizer">Event Organizer</option>
+            <option value="sponsor">Brand / Sponsor</option>
+          </select>
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label">Tell us your story</label>
+          <textarea class="bc-textarea" name="message" rows="5" placeholder="What you cook / perform / build, what excites you about Bombay Chowkk, and what slot you'd like." data-testid="partner-message">{{ form.message.value|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="bc-btn bc-btn-primary bc-btn-block bc-mt-6" data-testid="partner-submit-btn">Send application</button>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('.bc-partner-type-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.bc-partner-type-btn').forEach(function (b) {
+        b.classList.remove('active');
+        b.style.borderColor = 'var(--bc-white-10)';
+        b.style.background = 'rgba(28,25,23,.5)';
+      });
+      btn.classList.add('active');
+      btn.style.borderColor = 'var(--bc-amber-500)';
+      btn.style.background = 'var(--bc-amber-500-10)';
+    });
+  });
+</script>
+{% endblock %}

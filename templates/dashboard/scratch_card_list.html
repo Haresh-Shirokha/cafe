@@ -1,0 +1,20 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Scratch Cards{% endblock %}
+{% block dashboard_title %}Scratch Cards{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">Scratch Cards</h2>
+<table class="table bg-white">
+  <thead><tr><th>User</th><th>Order</th><th>Reward</th><th>Revealed</th><th></th></tr></thead>
+  <tbody>
+  {% for card in cards %}
+    <tr>
+      <td>{{ card.user.username }}</td>
+      <td>{{ card.order.bill_number }}</td>
+      <td>{{ card.reward_label|default:"—" }}</td>
+      <td>{% if card.revealed %}Yes{% else %}No{% endif %}</td>
+      <td>{% if not card.revealed %}<a href="{% url 'dashboard:scratch_card_override' card.id %}" class="btn btn-sm btn-outline-secondary">Override</a>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

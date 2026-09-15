@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Weekly Events{% endblock %}
+
+{% block full_content %}
+<div data-testid="events-page" style="background:var(--bc-stone-950);">
+
+  <section class="bc-relative bc-overflow-hidden" style="padding:9rem 0 5rem;">
+    <div class="bc-media-cover"><img src="https://images.unsplash.com/photo-1770751919094-ffd1642bf72b?crop=entropy&cs=srgb&fm=jpg&q=85" alt="" style="opacity:.3;"></div>
+    <div class="bc-overlay-b"></div>
+    <div class="bc-relative bc-container">
+      <p class="bc-overline">Weekly calendar</p>
+      <h1 class="bc-h1 bc-max-w-4xl">Seven nights. <br><span class="bc-italic-amber">Seven moods.</span></h1>
+      <p class="bc-lead bc-mt-8 bc-max-w-2xl">From Monday's open mic to Sunday's family mela — the chowk shape-shifts every evening. Pick your night, lock your seat.</p>
+    </div>
+  </section>
+
+  <section data-testid="weekly-calendar" style="padding:4rem 0;">
+    <div class="bc-container" style="display:grid;grid-template-columns:1fr;gap:2.5rem;">
+      <div>
+        <h2 class="font-display bc-mb-6" style="font-size:1.85rem;">This week</h2>
+        <div style="display:flex;flex-direction:column;">
+          {% for e in events %}
+            <button type="button" data-bc-event-day="{{ forloop.counter0 }}" data-bc-event-title="{{ e.title }}" class="bc-event-day-btn {% if forloop.first %}active{% endif %}" data-testid="event-day-{{ e.day|lower }}"
+              style="text-align:left;border:none;border-bottom:1px solid var(--bc-white-10);background:none;padding:1rem 0;cursor:pointer;color:{% if forloop.first %}var(--bc-amber-500){% else %}var(--bc-stone-300){% endif %};">
+              <span class="font-accent" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;color:var(--bc-stone-500);">{{ e.day }}</span>
+              <p class="font-display" style="font-size:1.4rem;margin-top:.2rem;">{{ e.title }}</p>
+            </button>
+          {% empty %}
+            <p class="bc-muted">No events listed yet — check back soon.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div>
+        {% for e in events %}
+          <div data-bc-event-panel="{{ forloop.counter0 }}" data-testid="event-detail" style="{% if not forloop.first %}display:none;{% endif %}border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:2.5rem;min-height:340px;">
+            <div class="bc-flex bc-items-center bc-gap-3 bc-mb-6">
+              <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;border:1px solid var(--bc-amber-500-40);padding:.3rem .75rem;">{{ e.tag }}</span>
+              <span class="font-accent bc-muted" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">{{ e.day }}</span>
+            </div>
+            <h3 class="font-display" style="font-size:2.2rem;line-height:1.1;">{{ e.title }}</h3>
+            <p class="bc-body bc-mt-6" style="font-size:1.05rem;max-width:36rem;">{{ e.description }}</p>
+            <div class="bc-flex bc-items-center bc-gap-3 bc-mt-8" style="color:var(--bc-stone-400);font-size:.9rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              {{ e.time }}
+            </div>
+            <a href="#rsvp-form" data-testid="event-detail-rsvp-cta" class="bc-btn bc-btn-primary" style="display:inline-flex;margin-top:2.5rem;">RSVP for {{ e.title }}</a>
+          </div>
+        {% empty %}
+          <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:2.5rem;color:var(--bc-stone-400);">Events calendar coming soon.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section id="rsvp-form" data-testid="rsvp-section" class="bc-section-lg" style="background:rgba(28,25,23,.3);">
+    <div class="bc-container" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+      <div>
+        <p class="bc-overline">Reserve your seat</p>
+        <h2 class="bc-h2">We'll save you a <span class="bc-italic-amber">chair</span> under the banyan tree.</h2>
+        <p class="bc-body bc-mt-6">Walk-ins welcome — but for weekends and ticketed nights, an RSVP guarantees your spot. We'll send you a WhatsApp confirmation within an hour.</p>
+      </div>
+
+      <form method="post" action="{% url 'pages:rsvp' %}" data-testid="rsvp-form" style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);backdrop-filter:blur(6px);padding:2.5rem;">
+        {% csrf_token %}
+        {% if rsvp_form.non_field_errors %}<div class="bc-alert error bc-mb-4">{{ rsvp_form.non_field_errors }}</div>{% endif %}
+        <div class="bc-grid bc-grid-2">
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> Your name</label>
+            <input class="bc-input" type="text" name="name" required data-testid="rsvp-name">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg> Email</label>
+            <input class="bc-input" type="email" name="email" required data-testid="rsvp-email">
+          </div>
+        </div>
+        <div class="bc-grid bc-grid-2 bc-mt-4">
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> Phone (optional)</label>
+            <input class="bc-input" type="text" name="phone" data-testid="rsvp-phone">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Guests</label>
+            <input class="bc-input" type="number" name="guests" min="1" max="20" value="2" data-testid="rsvp-guests">
+          </div>
+        </div>
+        <div class="bc-grid bc-grid-2 bc-mt-4">
+          <div class="bc-field">
+            <label class="bc-label">Event</label>
+            <select class="bc-select" name="event" data-bc-rsvp-event-select data-testid="rsvp-event">
+              {% for e in events %}
+                <option value="{{ e.title }}">{{ e.day }} – {{ e.title }}</option>
+              {% empty %}
+                <option value="Open Mic Night">Open Mic Night</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="bc-field">
+            <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Visit date</label>
+            <input class="bc-input" type="date" name="visit_date" data-testid="rsvp-date">
+          </div>
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Message (optional)</label>
+          <textarea class="bc-textarea" name="message" rows="3" placeholder="Birthday? Anniversary? Allergies? Tell us." data-testid="rsvp-message"></textarea>
+        </div>
+        <button type="submit" class="bc-btn bc-btn-primary bc-btn-block bc-mt-6" data-testid="rsvp-submit-btn">Confirm RSVP</button>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  .bc-event-day-btn.active { color: var(--bc-amber-500) !important; }
+  @media (min-width: 1024px) {
+    section[data-testid="weekly-calendar"] .bc-container { grid-template-columns: 4fr 8fr; }
+    section[data-testid="rsvp-section"] .bc-container { grid-template-columns: 5fr 7fr; }
+  }
+</style>
+{% endblock %}

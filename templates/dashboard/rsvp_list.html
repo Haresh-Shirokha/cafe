@@ -1,0 +1,29 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}RSVP Submissions{% endblock %}
+{% block dashboard_title %}RSVP Submissions{% endblock %}
+{% block dashboard_content %}
+<div class="bc-stat-row" style="grid-template-columns:1fr;max-width:260px;">
+  <div class="bc-stat-tile"><h3>{{ rsvps.count }}</h3><p>Total RSVPs</p></div>
+</div>
+
+<div class="table-responsive">
+<table class="table">
+  <thead><tr><th>Name</th><th>Contact</th><th>Event</th><th>Guests</th><th>Visit Date</th><th>Message</th><th>Submitted</th></tr></thead>
+  <tbody>
+  {% for r in rsvps %}
+    <tr>
+      <td>{{ r.name }}</td>
+      <td>{{ r.email }}{% if r.phone %}<br><span class="text-muted small">{{ r.phone }}</span>{% endif %}</td>
+      <td>{{ r.event }}</td>
+      <td>{{ r.guests }}</td>
+      <td>{{ r.visit_date|default:"—" }}</td>
+      <td class="small">{{ r.message|default:"—"|truncatewords:15 }}</td>
+      <td class="small text-muted">{{ r.created_at|date:"d M Y, h:i A" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="7" class="text-muted">No RSVPs yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

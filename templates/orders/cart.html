@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<h2 class="mb-4">Your Cart</h2>
+{% if items %}
+  <table class="table bg-white">
+    <thead><tr><th>Item</th><th>Add-ons</th><th>Unit Price</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead>
+    <tbody>
+    {% for row in items %}
+      <tr>
+        <td>{{ row.menu_item.name }}</td>
+        <td class="small text-muted">
+          {% for addon in row.addons %}
+            {{ addon.name }} (+₹{{ addon.price }}){% if not forloop.last %}, {% endif %}
+          {% empty %}
+            —
+          {% endfor %}
+        </td>
+        <td>₹{{ row.unit_price }}</td>
+        <td>{{ row.quantity }}</td>
+        <td>₹{{ row.subtotal }}</td>
+        <td><a href="{% url 'orders:remove_from_cart' row.key %}" class="btn btn-sm btn-outline-danger">Remove</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <h4>Total: ₹{{ total }}</h4>
+  <form method="post" action="{% url 'orders:checkout' %}" class="mt-3">
+    {% csrf_token %}
+    <div class="mb-3" style="max-width:260px;">
+      <label for="table_number" class="form-label">Table Number</label>
+      <input type="text" class="form-control" id="table_number" name="table_number" placeholder="e.g. 12" required maxlength="10">
+    </div>
+    <button class="btn btn-success" type="submit">Place Order</button>
+  </form>
+{% else %}
+  <p class="text-muted">Your cart is empty. <a href="{% url 'menu:list' %}">Browse the menu</a></p>
+{% endif %}
+{% endblock %}

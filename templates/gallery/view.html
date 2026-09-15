@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Your Food Photo{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm p-4 text-center">
+      <h3 class="mb-3">Your Photo — Order {{ order.bill_number }}</h3>
+
+      {% if photo.filtered_image %}
+        <img src="{{ photo.filtered_image.url }}" class="img-fluid rounded mb-3" style="max-height:420px;object-fit:cover;">
+      {% else %}
+        <div class="alert alert-info">Applying filter... please refresh in a moment.</div>
+        <img src="{{ photo.original_image.url }}" class="img-fluid rounded mb-3" style="max-height:420px;object-fit:cover;">
+      {% endif %}
+
+      <div class="d-flex gap-2 justify-content-center flex-wrap">
+        {% if photo.filtered_image %}
+          <a href="{{ photo.filtered_image.url }}" download class="btn btn-outline-secondary">Download</a>
+
+          <!-- Mobile Web Share API: opens the native share sheet directly if the Instagram app is installed -->
+          <button class="btn btn-danger" onclick="shareToInstagram()">Share on Instagram</button>
+        {% endif %}
+      </div>
+
+      {% if photo.shared_to_instagram %}
+        <p class="text-success mt-3">You've already shared this!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+async function shareToInstagram() {
+  const imgUrl = "{{ photo.filtered_image.url }}";
+  try {
+    const response = await fetch(imgUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "food-photo.jpg", { type: blob.type });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: "My food photo",
+        text: "Check out my order! "
+      });
+      // Mark as shared once successful
+      fetch("{% url 'gallery:mark_shared' order.id %}", { method: "GET" });
+    } else {
+      alert("Direct sharing isn't supported in your browser. Please download the photo and share it manually via the Instagram app.");
+    }
+  } catch (err) {
+    alert("Sharing failed. Please download the photo and try sharing manually.");
+  }
+}
+</script>
+{% endblock %}

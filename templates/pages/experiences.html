@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Experiences{% endblock %}
+
+{% block full_content %}
+<div data-testid="experiences-page" style="background:var(--bc-stone-950);">
+
+  <section class="bc-relative bc-overflow-hidden" style="padding:9rem 0 5rem;">
+    <div class="bc-media-cover"><img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/1958a861e8d4c30026ed05febda13255f3bc448ac6a416c0f88471144ea6285b.png" alt="" style="opacity:.4;"></div>
+    <div class="bc-overlay-b"></div>
+    <div class="bc-relative bc-container">
+      <p class="bc-overline">Our experiences</p>
+      <h1 class="bc-h1 bc-max-w-4xl">Twelve ways to spend <br><span class="bc-italic-amber">an evening</span>.</h1>
+      <p class="bc-lead bc-mt-8 bc-max-w-2xl">Every corner of the chowk holds a different story. Pick your favourite, or make it through all twelve — most regulars do, eventually.</p>
+    </div>
+  </section>
+
+  <div class="bc-marquee-wrap" data-testid="experiences-marquee">
+    <div class="bc-marquee-track">
+      {% for i in "12" %}
+      <span class="item">One destination<span class="dot">•</span></span>
+      <span class="item">Endless cravings<span class="dot">•</span></span>
+      <span class="item">Twenty kitchens<span class="dot">•</span></span>
+      <span class="item">One open sky<span class="dot">•</span></span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <section class="bc-section-lg">
+    <div class="bc-container">
+      <div class="bc-hairline-grid bc-grid-3">
+        <article data-testid="experience-1" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">01</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Khau Galli</h3>
+          <p class="bc-muted bc-mt-3">Twenty-plus rotating Mumbai street food stalls under one chowk. From Bandra bhel to Mohammed Ali kebabs.</p>
+        </article>
+        <article data-testid="experience-2" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">02</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Live Nataks</h3>
+          <p class="bc-muted bc-mt-3">Street theatre &amp; Marathi nataks performed beneath the central chowk tree every weekend.</p>
+        </article>
+        <article data-testid="experience-3" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">03</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Open Mic Nights</h3>
+          <p class="bc-muted bc-mt-3">Poets, comics, singers — the unfiltered voice of Mumbai gets the stage every Monday.</p>
+        </article>
+        <article data-testid="experience-4" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">04</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Bollywood Nights</h3>
+          <p class="bc-muted bc-mt-3">RD Burman to Ranbir. DJ + dhol + dance floor. Friday evenings turn into a chowk-wide baraat.</p>
+        </article>
+        <article data-testid="experience-5" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">05</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Pani Puri Challenges</h3>
+          <p class="bc-muted bc-mt-3">How many can you finish before the spice wins? Public leaderboard, weekly champions.</p>
+        </article>
+        <article data-testid="experience-6" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">06</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Cricket Screenings</h3>
+          <p class="bc-muted bc-mt-3">Match nights with giant LED, vada pav buckets and the loudest crowd this side of Wankhede.</p>
+        </article>
+        <article data-testid="experience-7" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">07</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Family Sundays</h3>
+          <p class="bc-muted bc-mt-3">Magic shows, kids' corner, dhol-tasha and a regional food mela — built for three generations.</p>
+        </article>
+        <article data-testid="experience-8" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">08</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Food Festivals</h3>
+          <p class="bc-muted bc-mt-3">Monthly themed pop-ups – Goan, Hyderabadi, Bengali, Gujarati. New cuisine, same chowk.</p>
+        </article>
+        <article data-testid="experience-9" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">09</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Street Music</h3>
+          <p class="bc-muted bc-mt-3">Acoustic sets from indie bands, sufi singers and the rare jazz quartet under the lanterns.</p>
+        </article>
+        <article data-testid="experience-10" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">10</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Community Games</h3>
+          <p class="bc-muted bc-mt-3">Lagori, carrom, antakshari leagues. Show up alone, leave with a new gang.</p>
+        </article>
+        <article data-testid="experience-11" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">11</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Poetry Nights</h3>
+          <p class="bc-muted bc-mt-3">Shayari, slam, kissa-kahani. Hindi, Urdu, Marathi, English — the language of Bombay.</p>
+        </article>
+        <article data-testid="experience-12" class="bc-card-hover" style="background:var(--bc-stone-950);padding:2.5rem;min-height:280px;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">12</span>
+          <h3 class="font-display bc-mt-6" style="font-size:1.85rem;">Local Artist Showcases</h3>
+          <p class="bc-muted bc-mt-3">Weekly rotating gallery of Mumbai's home painters, illustrators and craftspeople.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section data-testid="food-experience" class="bc-relative bc-grain bc-section-lg" style="background:rgba(28,25,23,.3);">
+    <div class="bc-relative bc-container" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+      <div>
+        <p class="bc-overline">The food</p>
+        <h2 class="bc-h2">One destination. <br><span class="bc-italic-amber">Endless cravings.</span></h2>
+        <p class="bc-body bc-mt-6">Mumbai street food, regional Indian, fusion stalls, desserts, beverages and seasonal pop-ups — all under the same string of lights.</p>
+        <div class="bc-mt-8" style="aspect-ratio:4/5;overflow:hidden;border:1px solid var(--bc-white-10);max-width:360px;">
+          <img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/5822558e4f2766722a9f2b18d4e545d6e5af5d37e65fc99230bb2d8336d8a16b.png" alt="Pani puri" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+      <div class="bc-grid bc-grid-2">
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:1.75rem;">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">Category 01</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.5rem;">Mumbai Street</h3>
+          <ul style="list-style:none;margin-top:1rem;padding:0;color:var(--bc-stone-400);font-size:.9rem;">
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Vada Pav</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Bhel Puri</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Pav Bhaji</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Sev Puri</li>
+            <li class="bc-flex bc-items-center bc-gap-3"><span class="bc-dot"></span> Dabeli</li>
+          </ul>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:1.75rem;">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">Category 02</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.5rem;">Regional India</h3>
+          <ul style="list-style:none;margin-top:1rem;padding:0;color:var(--bc-stone-400);font-size:.9rem;">
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Kolhapuri Misal</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Hyderabadi Biryani</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Bengali Kathi Roll</li>
+            <li class="bc-flex bc-items-center bc-gap-3"><span class="bc-dot"></span> Goan Vindaloo</li>
+          </ul>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:1.75rem;">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">Category 03</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.5rem;">Fusion Stalls</h3>
+          <ul style="list-style:none;margin-top:1rem;padding:0;color:var(--bc-stone-400);font-size:.9rem;">
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Butter Chicken Pizza</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Masala Tacos</li>
+            <li class="bc-flex bc-items-center bc-gap-3"><span class="bc-dot"></span> Chai Latte Tiramisu</li>
+          </ul>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:1.75rem;">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.62rem;">Category 04</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.5rem;">Desserts</h3>
+          <ul style="list-style:none;margin-top:1rem;padding:0;color:var(--bc-stone-400);font-size:.9rem;">
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Mawa Jalebi</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Kulfi Falooda</li>
+            <li class="bc-flex bc-items-center bc-gap-3" style="margin-bottom:.4rem;"><span class="bc-dot"></span> Malai Toast</li>
+            <li class="bc-flex bc-items-center bc-gap-3"><span class="bc-dot"></span> Phirni Pots</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if events %}
+  <section style="padding:5rem 0;">
+    <div class="bc-container">
+      <p class="bc-overline bc-text-center">This week</p>
+      <h2 class="bc-h2 bc-text-center bc-mb-12">What's on at the chowk.</h2>
+      <div class="bc-grid bc-grid-3">
+        {% for e in events %}
+        <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:1.75rem;">
+          <span class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.62rem;">{{ e.day }} · {{ e.tag }}</span>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">{{ e.title }}</h3>
+          <p class="bc-muted" style="font-size:.85rem;margin-top:.3rem;">{{ e.time }}</p>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">{{ e.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section style="padding:4rem 0;">
+    <div class="bc-container bc-text-center">
+      <h2 class="bc-h2">Pick your night.</h2>
+      <p class="bc-muted bc-mt-4">RSVP a slot — we'll save you a chair under the banyan tree.</p>
+      <a href="{% url 'pages:weekly_events' %}" data-testid="experiences-cta-events" class="bc-btn bc-btn-primary" style="display:inline-flex;margin-top:2rem;">View weekly calendar</a>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  @media (min-width: 1024px) { section[data-testid="food-experience"] .bc-container { grid-template-columns: 5fr 7fr; } }
+</style>
+{% endblock %}

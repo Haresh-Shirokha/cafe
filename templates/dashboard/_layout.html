@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block full_content %}
+<div class="bc-admin-shell" data-bc-admin-shell>
+  <aside class="bc-admin-sidebar" data-bc-admin-sidebar>
+    <div class="bc-admin-sidebar-head">
+      <a href="{% url 'dashboard:home' %}" class="bc-admin-brand">
+        <img src="{% static 'img/header_logo.png' %}" alt="Bombay Chowkk">
+        <span>Admin</span>
+      </a>
+      <button type="button" class="bc-admin-sidebar-close" data-bc-admin-sidebar-close aria-label="Close menu">&times;</button>
+    </div>
+
+    <nav class="bc-admin-nav">
+      <p class="bc-admin-nav-label">Overview</p>
+      <a href="{% url 'dashboard:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Dashboard</a>
+      <a href="{% url 'dashboard:reports_home' %}" class="{% if request.resolver_match.url_name == 'reports_home' %}active{% endif %}">Reports</a>
+      <a href="{% url 'dashboard:user_list' %}" class="{% if request.resolver_match.url_name == 'user_list' %}active{% endif %}">Users</a>
+
+      <p class="bc-admin-nav-label">Orders</p>
+      <a href="{% url 'dashboard:order_list' %}" class="{% if request.resolver_match.url_name in 'order_list,order_manage' %}active{% endif %}">All Orders</a>
+
+      <p class="bc-admin-nav-label">Catalogue</p>
+      <a href="{% url 'dashboard:menu_manage' %}" class="{% if request.resolver_match.url_name in 'menu_manage,menu_item_add,menu_item_edit' %}active{% endif %}">Menu</a>
+      <a href="{% url 'dashboard:addon_manage' %}" class="{% if request.resolver_match.url_name in 'addon_manage,addon_add,addon_edit' %}active{% endif %}">Add-ons</a>
+
+      <p class="bc-admin-nav-label">Rewards &amp; Wallet</p>
+      <a href="{% url 'dashboard:reward_pool' %}" class="{% if request.resolver_match.url_name in 'reward_pool,reward_add,nostalgia_add' %}active{% endif %}">Reward Pool</a>
+      <a href="{% url 'dashboard:reward_settings' %}" class="{% if request.resolver_match.url_name == 'reward_settings' %}active{% endif %}">Reward Settings</a>
+      <a href="{% url 'dashboard:scratch_card_list' %}" class="{% if request.resolver_match.url_name in 'scratch_card_list,scratch_card_override' %}active{% endif %}">Scratch Cards</a>
+      <a href="{% url 'dashboard:wallet_item_manage' %}" class="{% if request.resolver_match.url_name in 'wallet_item_manage,wallet_item_add,wallet_item_edit' %}active{% endif %}">Wallet Items</a>
+      <a href="{% url 'dashboard:wallet_redemption_list' %}" class="{% if request.resolver_match.url_name == 'wallet_redemption_list' %}active{% endif %}">Wallet Redemptions</a>
+
+      <p class="bc-admin-nav-label">Experience</p>
+      <a href="{% url 'dashboard:weekly_event_manage' %}" class="{% if request.resolver_match.url_name in 'weekly_event_manage,weekly_event_add,weekly_event_edit' %}active{% endif %}">Weekly Events</a>
+      <a href="{% url 'dashboard:photo_gallery' %}" class="{% if request.resolver_match.url_name == 'photo_gallery' %}active{% endif %}">Customer Photos</a>
+
+      <p class="bc-admin-nav-label">Website Submissions</p>
+      <a href="{% url 'dashboard:rsvp_list' %}" class="{% if request.resolver_match.url_name == 'rsvp_list' %}active{% endif %}">RSVPs {% if open_rsvp_count %}<span class="bc-admin-badge">{{ open_rsvp_count }}</span>{% endif %}</a>
+      <a href="{% url 'dashboard:contact_list' %}" class="{% if request.resolver_match.url_name == 'contact_list' %}active{% endif %}">Contact Messages {% if open_contact_count %}<span class="bc-admin-badge">{{ open_contact_count }}</span>{% endif %}</a>
+      <a href="{% url 'dashboard:partner_list' %}" class="{% if request.resolver_match.url_name == 'partner_list' %}active{% endif %}">Partner Applications {% if open_partner_count %}<span class="bc-admin-badge">{{ open_partner_count }}</span>{% endif %}</a>
+      <a href="{% url 'dashboard:newsletter_list' %}" class="{% if request.resolver_match.url_name == 'newsletter_list' %}active{% endif %}">Newsletter Subscribers</a>
+
+      <p class="bc-admin-nav-label">Account</p>
+      <a href="{% url 'pages:home' %}">View Website</a>
+      <a href="{% url 'accounts:profile' %}">My Profile</a>
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+    </nav>
+  </aside>
+
+  <div class="bc-admin-main">
+    <div class="bc-admin-topbar">
+      <button type="button" class="bc-admin-menu-btn" data-bc-admin-sidebar-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <button type="button" class="bc-admin-hide-btn" data-bc-admin-sidebar-hide-toggle title="Show/hide sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+        <span data-bc-admin-hide-label>Hide menu</span>
+      </button>
+      <span class="bc-admin-topbar-title">{% block dashboard_title %}Admin{% endblock %}</span>
+      <button type="button" class="bc-theme-toggle" data-bc-theme-toggle aria-label="Toggle light/dark mode" title="Toggle light/dark mode" style="margin-left:auto;">
+        <svg class="bc-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="bc-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+
+    <div class="bc-admin-content">
+      {% block dashboard_content %}{% endblock %}
+    </div>
+  </div>
+
+  <div class="bc-admin-overlay" data-bc-admin-overlay></div>
+</div>
+{% endblock %}

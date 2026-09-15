@@ -1,0 +1,28 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Weekly Events{% endblock %}
+{% block dashboard_title %}Weekly Events{% endblock %}
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Weekly Events</h2>
+  <a href="{% url 'dashboard:weekly_event_add' %}" class="btn btn-primary">+ Add Event</a>
+</div>
+<table class="table bg-white">
+  <thead><tr><th>Day</th><th>Title</th><th>Tag</th><th>Time</th><th></th></tr></thead>
+  <tbody>
+  {% for event in events %}
+    <tr>
+      <td>{{ event.day }}</td>
+      <td>{{ event.title }}</td>
+      <td><span class="badge bg-secondary">{{ event.tag }}</span></td>
+      <td>{{ event.time }}</td>
+      <td>
+        <a href="{% url 'dashboard:weekly_event_edit' event.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <a href="{% url 'dashboard:weekly_event_delete' event.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this event?')">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-muted">No weekly events yet. Add one!</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

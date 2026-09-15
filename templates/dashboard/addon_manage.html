@@ -1,0 +1,31 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Add-ons{% endblock %}
+{% block dashboard_title %}Add-ons{% endblock %}
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Menu Add-ons</h2>
+  <a href="{% url 'dashboard:addon_add' %}" class="btn btn-primary">+ Add New Add-on</a>
+</div>
+<p class="text-muted">Add-ons let customers customize an item — e.g. "Extra Cheese" (+₹30) on a Burger. Price is automatically added on top of the item price when selected.</p>
+<table class="table bg-white">
+  <thead><tr><th>Name</th><th>Extra Price</th><th>Applies To</th><th>Active</th><th></th></tr></thead>
+  <tbody>
+  {% for addon in addons %}
+    <tr>
+      <td>{{ addon.name }}</td>
+      <td>₹{{ addon.price }}</td>
+      <td class="small text-muted">
+        {% for item in addon.applicable_items.all %}{{ item.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}
+      </td>
+      <td>{% if addon.is_active %}Yes{% else %}No{% endif %}</td>
+      <td>
+        <a href="{% url 'dashboard:addon_edit' addon.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <a href="{% url 'dashboard:addon_delete' addon.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this add-on?')">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-muted">No add-ons yet. Add one, like "Extra Cheese" @ ₹30.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block full_content %}
+<div data-testid="about-page" style="background:var(--bc-stone-950);">
+
+  <section class="bc-relative bc-overflow-hidden" style="padding:9rem 0 5rem;">
+    <div class="bc-media-cover"><img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/fa79ebd5d6cb5e18eb17aafd67cb3506790d84835869131892fb7b3d680e646e.png" alt="" style="opacity:.3;"></div>
+    <div class="bc-overlay-b"></div>
+    <div class="bc-relative bc-container">
+      <p class="bc-overline">About us</p>
+      <h1 class="bc-h1 bc-max-w-4xl">Built by Mumbai. <br><span class="bc-italic-amber">For Mumbai.</span></h1>
+      <p class="bc-lead bc-mt-8 bc-max-w-2xl">Bombay Chowkk is a love letter to the city that raised us — a physical space where the old chowk energy meets modern taste. It's food, culture, and community, refusing to be separated.</p>
+    </div>
+  </section>
+
+  <section class="bc-section-lg">
+    <div class="bc-container bc-grid" style="grid-template-columns:1fr;gap:3rem;">
+      <div>
+        <p class="bc-overline">Our story</p>
+        <h2 class="bc-h2">Three friends. <br><span class="bc-italic">One chowk-shaped idea.</span></h2>
+      </div>
+      <div class="bc-body" style="font-size:1.05rem;">
+        <p>Three of us grew up in Lower Parel, Dadar and Bandra respectively. We didn't meet in an office — we met at a Kyani &amp; Co. table in 2019, arguing about which BEST bus route had the best view.</p>
+        <p class="bc-mt-4">That argument never ended. It just turned into a mood-board, a mood-board turned into a floor-plan, and the floor-plan into <span class="bc-amber">Bombay Chowkk</span>.</p>
+        <p class="bc-mt-4">Our promise is simple: every corner of this chowk must feel like it was made by a Mumbaikar who missed the city, not designed by a brand that studied it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bc-section-lg" style="background:rgba(28,25,23,.3);">
+    <div class="bc-container">
+      <p class="bc-overline">What we believe</p>
+      <h2 class="bc-h2 bc-mb-12">Six principles.</h2>
+      <div class="bc-grid bc-grid-3">
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">01</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Food is not the product.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">The evening is. Food is how we hold it together.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">02</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Nostalgia is a design tool.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Not a costume. We build like Mumbai remembers itself.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">03</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Community over customers.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">You're not billing a table — you're joining a chowk.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">04</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Local before global.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Home chefs and city artists get the mic before anyone else.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">05</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Phones down, faces up.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">The chowk is a good place to look up from your screen.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <p class="font-display bc-amber" style="font-size:1.6rem;">06</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.25rem;">Hygiene is heritage.</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">FSSAI-certified, daily audits, published scores. Non-negotiable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:5rem 0;">
+    <div class="bc-container bc-text-center" style="max-width:56rem;">
+      <h2 class="bc-h2">Come, be part of this.</h2>
+      <div class="bc-flex bc-flex-wrap bc-gap-4" style="justify-content:center;margin-top:2rem;">
+        {% if user.is_authenticated %}
+          <a href="{% if user.is_staff %}{% url 'dashboard:home' %}{% else %}{% url 'accounts:profile' %}{% endif %}" data-testid="about-cta-portal" class="bc-btn bc-btn-primary">Join the community</a>
+        {% else %}
+          <a href="{% url 'accounts:signup_phone_start' %}" data-testid="about-cta-portal" class="bc-btn bc-btn-primary">Join the community</a>
+        {% endif %}
+        <a href="{% url 'pages:partner' %}" data-testid="about-cta-partner" class="bc-btn bc-btn-secondary">Partner with us</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  @media (min-width: 1024px) {
+    section .bc-container.bc-grid { grid-template-columns: 5fr 7fr; }
+  }
+</style>
+{% endblock %}

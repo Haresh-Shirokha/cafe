@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Newsletter{% endblock %}
+
+{% block full_content %}
+<div style="background:var(--bc-stone-950);">
+  <section style="padding:9rem 0 6rem;">
+    <div class="bc-container bc-text-center" style="max-width:34rem;">
+      <p class="bc-overline" style="justify-content:center;display:flex;">Stay in the loop</p>
+      <h1 class="bc-h2 bc-mb-6">Join the chowk mailing list.</h1>
+      <p class="bc-body bc-mb-8">Weekly-event drops, festival announcements and the occasional secret-menu item — straight to your inbox.</p>
+
+      <form method="post" style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:2rem;text-align:left;">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="bc-alert error bc-mb-4">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="bc-field">
+          <label class="bc-label">Email</label>
+          <input class="bc-input" type="email" name="email" value="{{ form.email.value|default:'' }}" required>
+        </div>
+        <button type="submit" class="bc-btn bc-btn-primary bc-btn-block bc-mt-6">Subscribe</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}

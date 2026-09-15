@@ -1,0 +1,32 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Reward Pool{% endblock %}
+{% block dashboard_title %}Reward Pool{% endblock %}
+{% block dashboard_content %}
+<div class="row">
+  <div class="col-md-7">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4>Rewards</h4>
+      <a href="{% url 'dashboard:reward_add' %}" class="btn btn-sm btn-primary">+ Add Reward</a>
+    </div>
+    <table class="table bg-white">
+      <thead><tr><th>Cards</th><th>Code</th><th>Reward</th><th>Active</th></tr></thead>
+      <tbody>
+      {% for r in rewards %}
+        <tr><td>{{ r.cards }}</td><td>{{ r.code }}</td><td>{{ r.reward }}</td><td>{% if r.is_active %}Yes{% else %}No{% endif %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4>Nostalgia Stories</h4>
+      <a href="{% url 'dashboard:nostalgia_add' %}" class="btn btn-sm btn-primary">+ Add</a>
+    </div>
+    <ul class="list-group">
+      {% for n in nostalgias %}
+        <li class="list-group-item"><strong>{{ n.title }}</strong><br><span class="small text-muted">{{ n.story|truncatechars:80 }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

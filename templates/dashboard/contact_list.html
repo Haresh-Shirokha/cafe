@@ -1,0 +1,27 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Contact Messages{% endblock %}
+{% block dashboard_title %}Contact Messages{% endblock %}
+{% block dashboard_content %}
+<div class="bc-stat-row" style="grid-template-columns:1fr;max-width:260px;">
+  <div class="bc-stat-tile"><h3>{{ contacts.count }}</h3><p>Total Messages</p></div>
+</div>
+
+<div class="table-responsive">
+<table class="table">
+  <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Submitted</th></tr></thead>
+  <tbody>
+  {% for c in contacts %}
+    <tr>
+      <td>{{ c.name }}</td>
+      <td>{{ c.email }}</td>
+      <td>{{ c.subject|default:"—" }}</td>
+      <td class="small">{{ c.message }}</td>
+      <td class="small text-muted">{{ c.created_at|date:"d M Y, h:i A" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-muted">No contact messages yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

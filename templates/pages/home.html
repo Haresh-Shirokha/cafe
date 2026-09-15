@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block full_content %}
+<div data-testid="home-page" style="background:var(--bc-stone-950);">
+
+  <!-- HERO -->
+  <section data-testid="hero-section" class="bc-relative bc-overflow-hidden" style="min-height:92vh;">
+    <div class="bc-media-cover">
+      <img class="bc-slow-zoom" src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/53a836256f32bb17100078f404507e4ddb80fe60bfa3c5feee8dc9015663a1af.png" alt="Bombay Chowkk night market">
+    </div>
+    <div class="bc-overlay-r"></div>
+    <div class="bc-overlay-t"></div>
+
+    <div class="bc-relative bc-container" style="z-index:2;padding-top:9rem;padding-bottom:6rem;">
+      <div class="bc-max-w-3xl bc-fade-up">
+        <p class="bc-overline">Mumbai · Lower Parel · Est. 2026</p>
+        <h1 class="bc-h1">Welcome to <br><span class="bc-italic-amber">Bombay Chowkk</span></h1>
+        <p class="bc-lead bc-mt-8 bc-max-w-2xl">Where Mumbai's food, stories, drama and people come together. A living chowk built for everyone who calls this city a feeling, not a pin code.</p>
+        <div class="bc-flex bc-flex-wrap bc-gap-4 bc-mt-10">
+          <a href="{% url 'pages:experiences' %}" data-testid="hero-cta-explore" class="bc-btn bc-btn-primary">Explore the experience
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="{% url 'pages:weekly_events' %}" data-testid="hero-cta-rsvp" class="bc-btn bc-btn-secondary">Book an event</a>
+          <a href="{% url 'pages:partner' %}" data-testid="hero-cta-community" class="bc-btn bc-btn-ghost">Join the community</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:2rem;z-index:2;">
+      <div class="bc-container">
+        <div class="bc-card-glass bc-hairline-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div style="padding:1.25rem 1.5rem;">
+            <p class="font-display bc-amber" style="font-size:2rem;">20+</p>
+            <p class="font-accent bc-muted" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.4rem;">Food Stalls</p>
+          </div>
+          <div style="padding:1.25rem 1.5rem;border-left:1px solid var(--bc-white-10);">
+            <p class="font-display bc-amber" style="font-size:2rem;">7</p>
+            <p class="font-accent bc-muted" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.4rem;">Themed Nights / Week</p>
+          </div>
+          <div style="padding:1.25rem 1.5rem;border-left:1px solid var(--bc-white-10);">
+            <p class="font-display bc-amber" style="font-size:2rem;">1</p>
+            <p class="font-accent bc-muted" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.4rem;">Big Banyan Chowk</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="bc-marquee-wrap" data-testid="hero-marquee">
+    <div class="bc-marquee-track">
+      {% for i in "12" %}
+      <span class="item">Jahan Mumbai zinda hoti hai<span class="dot">•</span></span>
+      <span class="item">Food. Culture. Community.<span class="dot">•</span></span>
+      <span class="item">Mumbai's cultural khau galli<span class="dot">•</span></span>
+      <span class="item">Eat. Sit. Experience Mumbai.<span class="dot">•</span></span>
+      <span class="item">More than food. It's a feeling.<span class="dot">•</span></span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section data-testid="about-section" class="bc-section-lg">
+    <div class="bc-container bc-grid" style="grid-template-columns:1fr;gap:3rem;">
+      <div class="bc-grid" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+        <div>
+          <p class="bc-overline">About</p>
+          <h2 class="bc-h2">Not just a food place. <br><span class="bc-italic">A living Mumbai experience.</span></h2>
+        </div>
+        <div class="bc-body" style="font-size:1.05rem;">
+          <p>Bombay Chowkk is inspired by the old-school Mumbai khau gallis and village chowks where people gathered to eat, laugh, discuss life, celebrate culture, and create memories.</p>
+          <p class="bc-mt-4">We are building a space where <span class="bc-amber">food meets storytelling</span>, <span class="bc-amber">community meets entertainment</span>, and <span class="bc-amber">nostalgia meets modern experiences</span>.</p>
+          <p class="bc-mt-4 bc-italic" style="color:var(--bc-stone-200);">"This is a place where strangers become friends and every evening feels like a festival."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPT — bento -->
+  <section data-testid="concept-section" class="bc-relative bc-grain bc-section-lg" style="background:rgba(28,25,23,.4);">
+    <div class="bc-relative bc-container">
+      <div class="bc-flex bc-flex-wrap bc-justify-between bc-items-end bc-gap-6 bc-mb-12">
+        <div>
+          <p class="bc-overline">The concept</p>
+          <h2 class="bc-h2">What makes <span class="bc-italic-amber">Bombay Chowkk</span> different?</h2>
+        </div>
+        <p class="bc-muted bc-max-w-2xl">Mumbai's first immersive cultural food village concept — under one open sky.</p>
+      </div>
+
+      <div class="bc-grid" style="grid-template-columns:1fr;gap:1.5rem;">
+        <div class="bc-relative bc-overflow-hidden" style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.6);padding:2.5rem;min-height:340px;">
+          <div class="bc-media-cover"><img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/1958a861e8d4c30026ed05febda13255f3bc448ac6a416c0f88471144ea6285b.png" alt="" style="opacity:.4;"></div>
+          <div class="bc-overlay-t"></div>
+          <div class="bc-relative" style="z-index:2;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" class="bc-mb-4"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <h3 class="font-display" style="font-size:1.85rem;">Chowk-style central gathering</h3>
+            <p class="bc-body bc-mt-3" style="max-width:32rem;">A banyan tree at the centre, mismatched chairs around it. Every evening becomes a baithak.</p>
+          </div>
+        </div>
+
+        <div class="bc-grid bc-grid-3">
+          <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.6);padding:2.5rem;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" class="bc-mb-4"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+            <h3 class="font-display" style="font-size:1.5rem;">Live performances</h3>
+            <p class="bc-body bc-mt-3">Open mics, nataks, sufi nights, indie sets — built into the rent, not the bill.</p>
+          </div>
+          <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.6);padding:2.5rem;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" class="bc-mb-4"><path d="M3 2l1.6 20 7.4-4 7.4 4L21 2"/></svg>
+            <h3 class="font-display" style="font-size:1.5rem;">Food village</h3>
+            <p class="bc-body bc-mt-3">Twenty-plus rotating stalls. Mumbai street to regional India to home-chef pop-ups.</p>
+          </div>
+          <div style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.6);padding:2.5rem;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" class="bc-mb-4"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>
+            <h3 class="font-display" style="font-size:1.5rem;">Pani puri challenges</h3>
+            <p class="bc-body bc-mt-3">A weekly leaderboard. Eat fast, breathe later, leaderboard goes on Instagram.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCES preview -->
+  <section data-testid="experiences-preview" class="bc-section-lg">
+    <div class="bc-container">
+      <div class="bc-flex bc-flex-wrap bc-justify-between bc-items-end bc-gap-6 bc-mb-12">
+        <div>
+          <p class="bc-overline">Our experiences</p>
+          <h2 class="bc-h2">Twelve ways to spend an evening.</h2>
+        </div>
+        <a href="{% url 'pages:experiences' %}" data-testid="see-all-experiences" class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.25em;font-size:.72rem;display:inline-flex;align-items:center;gap:.5rem;">
+          See all 12
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="bc-hairline-grid bc-grid-3">
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Khau</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Khau Galli</h3>
+          <p class="bc-muted bc-mt-3">Twenty-plus rotating Mumbai street food stalls under one chowk. From Bandra bhel to Mohammed Ali kebabs.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Live</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Live Nataks</h3>
+          <p class="bc-muted bc-mt-3">Street theatre &amp; Marathi nataks performed beneath the central chowk tree every weekend.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Open</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Open Mic Nights</h3>
+          <p class="bc-muted bc-mt-3">Poets, comics, singers — the unfiltered voice of Mumbai gets the stage every Monday.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Bollywood</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Bollywood Nights</h3>
+          <p class="bc-muted bc-mt-3">RD Burman to Ranbir. DJ + dhol + dance floor. Friday evenings turn into a chowk-wide baraat.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Pani</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Pani Puri Challenges</h3>
+          <p class="bc-muted bc-mt-3">How many can you finish before the spice wins? Public leaderboard, weekly champions.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2.5rem;" class="bc-card-hover">
+          <p class="font-accent bc-amber" style="text-transform:uppercase;letter-spacing:.3em;font-size:.68rem;">Cricket</p>
+          <h3 class="font-display" style="font-size:1.85rem;margin-top:.6rem;">Cricket Screenings</h3>
+          <p class="bc-muted bc-mt-3">Match nights with giant LED, vada pav buckets and the loudest crowd this side of Wankhede.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE CHOWK -->
+  <section data-testid="signature-section" class="bc-relative bc-overflow-hidden bc-section-lg">
+    <div class="bc-media-cover"><img src="https://images.unsplash.com/photo-1770751919094-ffd1642bf72b?crop=entropy&cs=srgb&fm=jpg&q=85" alt="" style="opacity:.3;"></div>
+    <div class="bc-overlay-rl"></div>
+    <div class="bc-relative bc-container" style="z-index:2;display:grid;grid-template-columns:1fr;gap:3rem;">
+      <div>
+        <p class="bc-overline">The signature chowk</p>
+        <h2 class="bc-h2 bc-mb-8">A <span class="bc-italic-amber">banyan tree</span>, <br>a chacha, and a chair for you.</h2>
+        <div class="bc-body" style="font-size:1.1rem;">
+          <p>At the centre of Bombay Chowkk stands a real banyan tree — wired with a thousand fairy lights. Below it, a circle of mismatched chairs.</p>
+          <p class="bc-mt-4">This is where storytelling elders, the chacha-characters of Mumbai, sit every evening. They share a paan, an old film story, a Dharavi memory. You sit. You listen. You speak. That's the whole show.</p>
+          <p class="bc-mt-4 bc-italic-amber font-display" style="font-size:1.4rem;">"Yahaan baithoge, toh sheher milega."</p>
+        </div>
+      </div>
+      <div>
+        <div class="bc-glow" style="aspect-ratio:3/4;overflow:hidden;border:1px solid var(--bc-white-10);max-width:420px;">
+          <img src="https://static.prod-images.emergentagent.com/jobs/57b30a01-2b25-467c-8bec-0e5651b0a8e6/images/5822558e4f2766722a9f2b18d4e545d6e5af5d37e65fc99230bb2d8336d8a16b.png" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section data-testid="community-section" class="bc-section-lg" style="background:rgba(28,25,23,.3);">
+    <div class="bc-container" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+      <div>
+        <p class="bc-overline">For the city</p>
+        <h2 class="bc-h2">Built for the people of <span class="bc-italic-amber">Mumbai</span>.</h2>
+        <p class="bc-body bc-italic bc-mt-8" style="font-size:1.1rem;">"We are not building customers. We are building a community."</p>
+      </div>
+      <div class="bc-hairline-grid bc-grid-2">
+        <div style="background:var(--bc-stone-950);padding:2rem;">
+          <h4 class="font-display bc-amber" style="font-size:1.2rem;margin-bottom:.6rem;">Bringing people together</h4>
+          <p class="bc-muted" style="font-size:.9rem;">Real-world social — phones down, table full.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2rem;">
+          <h4 class="font-display bc-amber" style="font-size:1.2rem;margin-bottom:.6rem;">Safe &amp; inclusive</h4>
+          <p class="bc-muted" style="font-size:.9rem;">Curated rules, trained crew, zero tolerance.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2rem;">
+          <h4 class="font-display bc-amber" style="font-size:1.2rem;margin-bottom:.6rem;">Local talent first</h4>
+          <p class="bc-muted" style="font-size:.9rem;">Chefs, performers, artists — we platform Mumbai.</p>
+        </div>
+        <div style="background:var(--bc-stone-950);padding:2rem;">
+          <h4 class="font-display bc-amber" style="font-size:1.2rem;margin-bottom:.6rem;">A second home</h4>
+          <p class="bc-muted" style="font-size:.9rem;">Regulars get a tile on the chowk wall. Promise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USP -->
+  <section data-testid="usp-section" class="bc-section-lg">
+    <div class="bc-container">
+      <p class="bc-overline">Why us</p>
+      <h2 class="bc-h2 bc-mb-12">Why Bombay Chowkk?</h2>
+      <div class="bc-grid bc-grid-3">
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">01</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">One Destination, Endless Cravings</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Twenty kitchens, one bill. Mumbai's edible map under one sky.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">02</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Entertainment Built In</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Every evening has a show. You don't book entertainment — it's the rent.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">03</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Community First</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">We don't build customers. We build a chowk where strangers become regulars.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">04</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Highly Instagrammable</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Reel-worthy corners, neon walls, lantern alleys — the camera eats first.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">05</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Daily Activities</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Open mic Monday to Family Mela Sunday. The week never repeats itself.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">06</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Family Friendly</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">From dadi to toddler — built so three generations enjoy the same evening.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">07</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Cultural Storytelling</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Chacha-tales, street nataks, vintage cinema corners. Heritage, served warm.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">08</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Mumbai-Inspired Ambience</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Vada-pav stalls, BEST-bus benches, neon signboards. The city, indoors.</p>
+        </div>
+        <div style="border:1px solid var(--bc-white-10);background:rgba(255,255,255,.02);padding:2rem;" class="bc-card-hover">
+          <p class="font-display" style="font-size:1.6rem;">09</p>
+          <h3 class="font-display bc-mt-3" style="font-size:1.3rem;">Ever-Changing Experiences</h3>
+          <p class="bc-muted bc-mt-3" style="font-size:.9rem;">Rotating stalls, themed weeks, surprise pop-ups. No two Saturdays are the same.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section data-testid="testimonials-section" class="bc-section-lg" style="background:rgba(28,25,23,.4);">
+    <div class="bc-container">
+      <p class="bc-overline">Voices of the chowk</p>
+      <h2 class="bc-h2 bc-mb-12">What people say.</h2>
+      <div class="bc-grid bc-grid-3">
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"Bombay Chowkk feels like old Mumbai with modern vibes. Came for the pani puri, stayed three hours for the open mic."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">Riya Mehra</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Bandra resident</p>
+          </figcaption>
+        </figure>
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"The chowk tree, the chacha telling stories — it's the most cinematic dinner I've ever had."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">Aakash Patil</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Filmmaker</p>
+          </figcaption>
+        </figure>
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"Performed here on a Monday. The crowd treated a stranger like family. That's rare in this city."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">Fatima Sheikh</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Comedian</p>
+          </figcaption>
+        </figure>
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"Came for food, stayed for the people. Now we're here every Friday — Bollywood Night is sacred."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">Nikhil &amp; Sonal</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Couple, Powai</p>
+          </figcaption>
+        </figure>
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"Three generations, one table, zero phones. Family Mela does what nothing else in Mumbai does anymore."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">The Joshi Family</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Sunday regulars</p>
+          </figcaption>
+        </figure>
+        <figure style="border:1px solid var(--bc-white-10);background:rgba(12,10,9,.6);padding:2rem;">
+          <blockquote class="font-display bc-italic" style="font-size:1.3rem;color:var(--bc-stone-100);line-height:1.35;">"They gave my grandmother's recipes a stall. The crowd lined up. I cried a little. Then sold out."</blockquote>
+          <figcaption style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bc-white-10);font-size:.85rem;">
+            <p class="bc-amber" style="font-weight:500;margin:0;">Devika Iyer</p>
+            <p class="bc-faint" style="text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;margin-top:.25rem;">Home chef</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA strip -->
+  <section data-testid="cta-strip" class="bc-section-lg">
+    <div class="bc-container">
+      <div style="border:1px solid var(--bc-white-10);background:linear-gradient(135deg,var(--bc-amber-500-10),var(--bc-stone-900) 50%,var(--bc-stone-950));padding:3rem;">
+        <div style="display:grid;grid-template-columns:1fr;gap:2rem;align-items:center;">
+          <div>
+            <h2 class="bc-h2">I don't just want to eat here. <br><span class="bc-italic-amber">I want to belong here.</span></h2>
+            <p class="bc-body bc-mt-4 bc-max-w-2xl">Whether you come for the pani puri, the poetry, or the people — Bombay Chowkk has a chair waiting.</p>
+          </div>
+          <div class="bc-flex" style="flex-direction:column;gap:.75rem;">
+            <a href="{% url 'pages:weekly_events' %}" data-testid="cta-strip-rsvp" class="bc-btn bc-btn-primary" style="text-align:center;">Reserve your evening</a>
+            <a href="{% url 'pages:partner' %}" data-testid="cta-strip-partner" class="bc-btn bc-btn-secondary" style="text-align:center;">Become a partner</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  @media (min-width: 1024px) {
+    section[data-testid="about-section"] .bc-grid { grid-template-columns: 5fr 7fr; }
+    section[data-testid="signature-section"] .bc-container { grid-template-columns: 7fr 5fr; }
+    section[data-testid="community-section"] .bc-container { grid-template-columns: 5fr 7fr; }
+    section[data-testid="concept-section"] .bc-grid { grid-template-columns: 7fr 5fr; }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}My Wallet{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Wallet</h2>
+
+<div class="card p-4 mb-4 text-center" style="background:linear-gradient(135deg,#f7971e,#ffd200); border:none;">
+  <p class="mb-1 text-dark">Current Balance</p>
+  <h1 class="display-4 fw-bold text-dark">{{ user.points }} <small class="fs-5">points</small></h1>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-7">
+    <h5 class="mb-3">Redeem Points</h5>
+    <div class="row g-3">
+      {% for item in items %}
+        <div class="col-md-6">
+          <div class="card h-100 shadow-sm">
+            {% if item.image %}<img src="{{ item.image.url }}" class="card-img-top" style="height:140px;object-fit:cover;">{% endif %}
+            <div class="card-body">
+              <h6 class="card-title">{{ item.name }}</h6>
+              <p class="small text-muted">{{ item.description }}</p>
+              <p class="fw-bold">{{ item.points_required }} points</p>
+              {% if user.points >= item.points_required %}
+                <form method="post" action="{% url 'wallet:redeem' item.id %}">
+                  {% csrf_token %}
+                  <button class="btn btn-success btn-sm w-100">Redeem Now</button>
+                </form>
+              {% else %}
+                <button class="btn btn-outline-secondary btn-sm w-100" disabled>
+                  Not enough points ({{ user.points }}/{{ item.points_required }})
+                </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-muted">No redeemable items are available right now.</p>
+      {% endfor %}
+    </div>
+
+    {% if redemptions %}
+      <h5 class="mt-4 mb-3">My Redemptions</h5>
+      <table class="table bg-white">
+        <thead><tr><th>Item</th><th>Points</th><th>Code</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for r in redemptions %}
+          <tr>
+            <td>{{ r.item.name|default:"—" }}</td>
+            <td>{{ r.points_spent }}</td>
+            <td><code>{{ r.redemption_code }}</code></td>
+            <td>{% if r.fulfilled %}<span class="badge bg-success">Fulfilled</span>{% else %}<span class="badge bg-secondary">Show this code at counter</span>{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+
+  <div class="col-md-5">
+    <h5 class="mb-3">Points History</h5>
+    <ul class="list-group">
+      {% for t in transactions %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <div>{{ t.description }}</div>
+            <small class="text-muted">{{ t.created_at|date:"d M Y, h:i A" }}</small>
+          </div>
+          <span class="badge {% if t.points > 0 %}bg-success{% else %}bg-danger{% endif %} rounded-pill">
+            {% if t.points > 0 %}+{% endif %}{{ t.points }}
+          </span>
+        </li>
+      {% empty %}
+        <li class="list-group-item text-muted">No transactions yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Mark Bill Paid{% endblock %}
+{% block dashboard_title %}Mark Bill Paid{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-1">Mark Bill Paid — {{ order.bill_number }}</h2>
+<p class="text-muted mb-4">Bill Total: <strong>₹{{ order.total_amount }}</strong></p>
+
+<form method="post" class="card p-4" id="payment-form">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Payment Method</label>
+    <select name="method" id="method-select" class="form-select" required>
+      <option value="">-- Select --</option>
+      <option value="gpay">GPay</option>
+      <option value="cash">Cash</option>
+      <option value="card">Credit/Debit Card</option>
+    </select>
+  </div>
+
+  <div id="cash-section" style="display:none;">
+    <hr>
+    <h5>Cash Received (which notes the customer gave)</h5>
+    <div class="row g-2 mb-3">
+      {% for d in denominations %}
+        <div class="col-3">
+          <label class="form-label small mb-0">₹{{ d }} × </label>
+          <input type="number" name="recv_{{ d }}" min="0" value="0" class="form-control form-control-sm recv-input" data-value="{{ d }}">
+        </div>
+      {% endfor %}
+    </div>
+    <p>Total Cash Received: <strong id="recv-total">₹0</strong></p>
+
+    <hr>
+    <h5>Change Given (which notes you gave back)</h5>
+    <p class="text-muted small">Expected change: <strong id="expected-change">₹0</strong></p>
+    <div class="row g-2 mb-3">
+      {% for d in denominations %}
+        <div class="col-3">
+          <label class="form-label small mb-0">₹{{ d }} × </label>
+          <input type="number" name="change_{{ d }}" min="0" value="0" class="form-control form-control-sm change-input" data-value="{{ d }}">
+        </div>
+      {% endfor %}
+    </div>
+    <p>Total Change Given: <strong id="change-total">₹0</strong></p>
+  </div>
+
+  <button type="submit" class="btn btn-success mt-3">Confirm Payment</button>
+  <a href="{% url 'dashboard:order_manage' order.id %}" class="btn btn-outline-secondary mt-3">Cancel</a>
+</form>
+
+<script>
+  const billTotal = {{ order.total_amount }};
+  const methodSelect = document.getElementById("method-select");
+  const cashSection = document.getElementById("cash-section");
+
+  methodSelect.addEventListener("change", function () {
+    cashSection.style.display = this.value === "cash" ? "block" : "none";
+  });
+
+  function sumInputs(selector) {
+    let total = 0;
+    document.querySelectorAll(selector).forEach(function (input) {
+      const val = parseInt(input.value, 10) || 0;
+      const denom = parseInt(input.dataset.value, 10);
+      total += val * denom;
+    });
+    return total;
+  }
+
+  function updateTotals() {
+    const recvTotal = sumInputs(".recv-input");
+    const changeTotal = sumInputs(".change-input");
+    document.getElementById("recv-total").textContent = "₹" + recvTotal;
+    document.getElementById("change-total").textContent = "₹" + changeTotal;
+    document.getElementById("expected-change").textContent = "₹" + Math.max(0, recvTotal - billTotal);
+  }
+
+  document.querySelectorAll(".recv-input, .change-input").forEach(function (input) {
+    input.addEventListener("input", updateTotals);
+  });
+</script>
+{% endblock %}

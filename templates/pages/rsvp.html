@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}RSVP{% endblock %}
+
+{% block full_content %}
+<div style="background:var(--bc-stone-950);">
+  <section style="padding:9rem 0 5rem;">
+    <div class="bc-container" style="max-width:40rem;">
+      <p class="bc-overline">Reserve your seat</p>
+      <h1 class="bc-h2 bc-mb-8">Thanks for RSVP-ing at the chowk.</h1>
+      <p class="bc-body bc-mb-8">Fill this in and we'll save you a chair under the banyan tree. Prefer the full weekly calendar view? <a href="{% url 'pages:weekly_events' %}" class="bc-amber">Head there instead</a></p>
+
+      <form method="post" style="border:1px solid var(--bc-white-10);background:rgba(28,25,23,.5);padding:2.5rem;">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="bc-alert error bc-mb-4">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="bc-grid bc-grid-2">
+          <div class="bc-field">
+            <label class="bc-label">Your name</label>
+            <input class="bc-input" type="text" name="name" value="{{ form.name.value|default:'' }}" required>
+          </div>
+          <div class="bc-field">
+            <label class="bc-label">Email</label>
+            <input class="bc-input" type="email" name="email" value="{{ form.email.value|default:'' }}" required>
+          </div>
+        </div>
+        <div class="bc-grid bc-grid-2 bc-mt-4">
+          <div class="bc-field">
+            <label class="bc-label">Phone (optional)</label>
+            <input class="bc-input" type="text" name="phone" value="{{ form.phone.value|default:'' }}">
+          </div>
+          <div class="bc-field">
+            <label class="bc-label">Guests</label>
+            <input class="bc-input" type="number" name="guests" min="1" max="20" value="{{ form.guests.value|default:'2' }}">
+          </div>
+        </div>
+        <div class="bc-grid bc-grid-2 bc-mt-4">
+          <div class="bc-field">
+            <label class="bc-label">Event</label>
+            <input class="bc-input" type="text" name="event" value="{{ form.event.value|default:'' }}" required>
+          </div>
+          <div class="bc-field">
+            <label class="bc-label">Visit date</label>
+            <input class="bc-input" type="date" name="visit_date" value="{{ form.visit_date.value|default:'' }}">
+          </div>
+        </div>
+        <div class="bc-field bc-mt-4">
+          <label class="bc-label">Message (optional)</label>
+          <textarea class="bc-textarea" name="message" rows="3">{{ form.message.value|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="bc-btn bc-btn-primary bc-btn-block bc-mt-6">Confirm RSVP</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}

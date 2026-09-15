@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.bill_number }}{% endblock %}
+{% block content %}
+<h2>Order {{ order.bill_number }}</h2>
+<p class="mb-1">Table Number: <strong>{{ order.table_number|default:"—" }}</strong></p>
+<p>
+  Status: <span class="badge bg-info text-dark">{{ order.get_status_display }}</span>
+  {% if user.is_staff %}
+    &nbsp;|&nbsp;
+    {% if order.status == "delivered" %}
+      <span class="badge bg-success">Delivered in {{ order.delivery_duration_display }}</span>
+    {% else %}
+      Ordered: <span class="order-timer fw-bold" data-created="{{ order.created_at.isoformat }}">--</span>
+    {% endif %}
+    {% if order.paid_at %}
+      &nbsp;|&nbsp; <span class="badge bg-primary">Table Time: {{ order.payment_duration_display }}</span>
+    {% endif %}
+  {% endif %}
+</p>
+
+{% if not user.is_staff %}
+  {% if order.paid_at %}
+    <div class="alert alert-success"><strong>Bill has been paid!</strong> Thank you!</div>
+  {% elif order.status == "delivered" %}
+    <div class="alert alert-info"><strong>Your order has been delivered!</strong></div>
+  {% endif %}
+{% endif %}
+
+<table class="table bg-white">
+  <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+  <tbody>
+  {% for item in order.items.all %}
+    <tr><td>{{ item.item_name }}{% if item.addons_summary %}<br><span class="small text-muted">{{ item.addons_summary }}</span>{% endif %}</td><td>₹{{ item.price }}</td><td>{{ item.quantity }}</td><td>₹{{ item.subtotal }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h4>Total: ₹{{ order.total_amount }}</h4>
+
+<div class="d-flex gap-2 mb-3">
+  <a href="{% url 'invoices:detail' order.id %}" class="btn btn-outline-dark btn-sm">View Invoice</a>
+</div>
+
+{% if order.invoice.emailed_at %}
+  <div class="alert alert-info">This invoice has already been emailed to you — {{ order.invoice.emailed_at|date:"d M Y, h:i A" }}</div>
+{% endif %}
+
+{% if order.status == "delivered" and not user.is_staff %}
+  <div class="card p-3 mb-3 bg-warning-subtle">
+    {% if order.photo %}
+      <p class="mb-2">You've already added your food photo!</p>
+      <a href="{% url 'gallery:view' order.id %}" class="btn btn-primary">View & Share Photo</a>
+    {% else %}
+      <p class="mb-2">Your order has been delivered! Take a photo of your food, we'll apply a nice filter, and you can share it on Instagram.</p>
+      <a href="{% url 'gallery:capture' order.id %}" class="btn btn-primary">Capture Photo </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<a href="{% url 'orders:history' %}" class="btn btn-outline-secondary">Back</a>
+{% endblock %}

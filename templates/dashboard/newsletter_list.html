@@ -1,0 +1,24 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Newsletter Subscribers{% endblock %}
+{% block dashboard_title %}Newsletter Subscribers{% endblock %}
+{% block dashboard_content %}
+<div class="bc-stat-row" style="grid-template-columns:1fr;max-width:260px;">
+  <div class="bc-stat-tile"><h3>{{ subscribers.count }}</h3><p>Total Subscribers</p></div>
+</div>
+
+<div class="table-responsive">
+<table class="table">
+  <thead><tr><th>Email</th><th>Subscribed</th></tr></thead>
+  <tbody>
+  {% for s in subscribers %}
+    <tr>
+      <td>{{ s.email }}</td>
+      <td class="small text-muted">{{ s.created_at|date:"d M Y, h:i A" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="2" class="text-muted">No subscribers yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

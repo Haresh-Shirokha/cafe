@@ -1,0 +1,35 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Customer Food Photos{% endblock %}
+{% block dashboard_title %}Customer Food Photos{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">Customer Food Photos</h2>
+<p class="text-muted">Here you can see every filtered food photo customers added after their order was delivered. Download them to post on your brand's Instagram.</p>
+
+<div class="row g-3">
+  {% for photo in photos %}
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        {% if photo.filtered_image %}
+          <img src="{{ photo.filtered_image.url }}" class="card-img-top" style="height:220px;object-fit:cover;">
+        {% endif %}
+        <div class="card-body">
+          <p class="mb-1"><strong>{{ photo.user.username }}</strong></p>
+          <p class="small text-muted mb-2">Order: {{ photo.order.bill_number }}</p>
+          <div class="d-flex gap-2 flex-wrap">
+            {% if photo.filtered_image %}
+              <a href="{{ photo.filtered_image.url }}" download class="btn btn-sm btn-outline-secondary">Download</a>
+            {% endif %}
+            {% if photo.admin_downloaded %}
+              <span class="badge bg-success align-self-center">Downloaded</span>
+            {% else %}
+              <a href="{% url 'dashboard:mark_photo_downloaded' photo.id %}" class="btn btn-sm btn-success">Mark Downloaded</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">No customer photos yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

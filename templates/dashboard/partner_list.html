@@ -1,0 +1,28 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}Partner Applications{% endblock %}
+{% block dashboard_title %}Partner Applications{% endblock %}
+{% block dashboard_content %}
+<div class="bc-stat-row" style="grid-template-columns:1fr;max-width:260px;">
+  <div class="bc-stat-tile"><h3>{{ partners.count }}</h3><p>Total Applications</p></div>
+</div>
+
+<div class="table-responsive">
+<table class="table">
+  <thead><tr><th>Name</th><th>Contact</th><th>Type</th><th>Brand / Stage</th><th>Message</th><th>Submitted</th></tr></thead>
+  <tbody>
+  {% for p in partners %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.email }}{% if p.phone %}<br><span class="text-muted small">{{ p.phone }}</span>{% endif %}</td>
+      <td>{{ p.partner_type }}</td>
+      <td>{{ p.brand_name|default:"—" }}</td>
+      <td class="small">{{ p.message|default:"—"|truncatewords:15 }}</td>
+      <td class="small text-muted">{{ p.created_at|date:"d M Y, h:i A" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6" class="text-muted">No partner applications yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

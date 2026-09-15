@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Scratch Your Card{% endblock %}
+
+{% block full_content %}
+<div style="background:var(--bc-stone-950);min-height:80vh;padding:8rem 1.5rem 5rem;display:flex;flex-direction:column;align-items:center;">
+
+  <p class="bc-overline" style="text-align:center;">Order {{ card.order.bill_number }}</p>
+  <h1 class="font-display" style="font-size:clamp(1.8rem,5vw,2.6rem);text-align:center;color:var(--bc-stone-50);margin-bottom:.5rem;">
+    Scratch your card, <span class="bc-italic-amber">not your head.</span>
+  </h1>
+  <p class="bc-muted" style="text-align:center;max-width:26rem;margin-bottom:2.5rem;" data-bc-scratch-hint>
+    Rub the gold panel below with your finger or mouse to reveal your reward.
+  </p>
+
+  <div id="bc-scratch-wrap" style="position:relative;width:320px;max-width:88vw;height:200px;border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);border:1px solid var(--bc-white-10);">
+    <!-- Prize layer (underneath) -->
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1c1917,#0c0a09);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.25rem;">
+      <p class="font-accent" style="color:var(--bc-amber-500);text-transform:uppercase;letter-spacing:.25em;font-size:.65rem;margin:0 0 .5rem;">You won</p>
+      <h2 class="font-display" style="color:var(--bc-stone-50);font-size:1.6rem;line-height:1.15;margin:0;">{{ card.reward_label }}</h2>
+      {% if card.reward_code %}
+        <p class="font-accent" style="color:var(--bc-stone-400);font-size:.72rem;letter-spacing:.15em;margin-top:.6rem;">CODE: {{ card.reward_code }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Scratch coating (canvas, drawn over the prize) -->
+    <canvas id="bc-scratch-canvas" width="320" height="200" style="position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none;"></canvas>
+  </div>
+
+  <div id="bc-scratch-result" style="display:none;margin-top:2rem;text-align:center;">
+    <p class="bc-body" style="color:var(--bc-stone-200);margin-bottom:1rem;">Reward claimed and added to your account.</p>
+    <a href="{% url 'accounts:profile' %}" class="bc-btn bc-btn-primary">Back to profile</a>
+  </div>
+
+  <button type="button" id="bc-scratch-skip" class="bc-btn bc-btn-secondary" style="margin-top:1.5rem;">Reveal instantly instead</button>
+
+  <form id="bc-scratch-form" method="post" action="{% url 'rewards:reveal' card.id %}" style="display:none;">
+    {% csrf_token %}
+  </form>
+</div>
+
+<script>
+(function () {
+  var canvas = document.getElementById("bc-scratch-canvas");
+  var ctx = canvas.getContext("2d");
+  var wrap = document.getElementById("bc-scratch-wrap");
+  var resultBox = document.getElementById("bc-scratch-result");
+  var hint = document.querySelector("[data-bc-scratch-hint]");
+  var skipBtn = document.getElementById("bc-scratch-skip");
+  var form = document.getElementById("bc-scratch-form");
+  var W = canvas.width, H = canvas.height;
+  var done = false;
+
+  function paintCoating() {
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, "#fcd34d");
+    g.addColorStop(0.5, "#f59e0b");
+    g.addColorStop(1, "#b45309");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = "rgba(12,10,9,.35)";
+    ctx.font = "700 13px Oswald, sans-serif";
+    ctx.textAlign = "center";
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(-0.35);
+    for (var y = -H; y < H; y += 26) {
+      ctx.fillText("SCRATCH TO REVEAL  •  BOMBAY CHOWKK  •", 0, y);
+    }
+    ctx.restore();
+  }
+  paintCoating();
+
+  function getPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = W / rect.width, scaleY = H / rect.height;
+    var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+  }
+
+  var scratching = false;
+  function scratchAt(x, y) {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(x, y, 18, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function checkProgress() {
+    if (done) return;
+    var data = ctx.getImageData(0, 0, W, H).data;
+    var cleared = 0, total = W * H;
+    for (var i = 3; i < data.length; i += 4 * 12) { // sample every 12th pixel for speed
+      if (data[i] < 40) cleared++;
+    }
+    var pct = cleared / (total / 12);
+    if (pct > 0.45) {
+      finishReveal();
+    }
+  }
+
+  function finishReveal() {
+    if (done) return;
+    done = true;
+    canvas.style.transition = "opacity .6s ease";
+    canvas.style.opacity = "0";
+    if (hint) hint.style.display = "none";
+    setTimeout(function () { canvas.style.display = "none"; }, 650);
+    submitReveal();
+  }
+
+  function submitReveal() {
+    var body = new URLSearchParams();
+    var csrfInput = form.querySelector("[name=csrfmiddlewaretoken]");
+    fetch(form.action, {
+      method: "POST",
+      headers: { "X-CSRFToken": csrfInput.value },
+      body: body,
+    }).finally(function () {
+      resultBox.style.display = "block";
+      skipBtn.style.display = "none";
+    });
+  }
+
+  canvas.addEventListener("mousedown", function (e) { scratching = true; var p = getPos(e); scratchAt(p.x, p.y); });
+  canvas.addEventListener("mousemove", function (e) { if (scratching) { var p = getPos(e); scratchAt(p.x, p.y); checkProgress(); } });
+  window.addEventListener("mouseup", function () { scratching = false; });
+
+  canvas.addEventListener("touchstart", function (e) { scratching = true; var p = getPos(e); scratchAt(p.x, p.y); e.preventDefault(); }, { passive: false });
+  canvas.addEventListener("touchmove", function (e) { if (scratching) { var p = getPos(e); scratchAt(p.x, p.y); checkProgress(); } e.preventDefault(); }, { passive: false });
+  window.addEventListener("touchend", function () { scratching = false; });
+
+  skipBtn.addEventListener("click", finishReveal);
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow-sm p-4">
+      <h3 class="mb-1">Create your account</h3>
+      <p class="text-muted small">Enter your phone number and email — verify with an OTP and you're logged in instantly. Add your name and photo later from your profile.</p>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary w-100" type="submit">Send OTP</button>
+      </form>
+      <p class="mt-3">Already have an account? <a href="{% url 'accounts:login_phone_start' %}">Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

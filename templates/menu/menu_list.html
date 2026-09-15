@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+{% block content %}
+<h2 class="mb-4">Our Menu</h2>
+{% for category in categories %}
+  <h4 class="mt-4">{{ category.name }}</h4>
+  <div class="row g-3">
+    {% for item in category.items.all %}
+      {% if item.is_available %}
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          {% if item.image %}<img src="{{ item.image.url }}" class="card-img-top" style="height:160px;object-fit:cover;">{% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text small text-muted">{{ item.description }}</p>
+            <p class="fw-bold base-price" data-base-price="{{ item.price }}">₹{{ item.price }}</p>
+            {% if user.is_authenticated and not user.is_staff %}
+              <form method="post" action="{% url 'orders:add_to_cart' item.id %}" class="qty-form">
+                {% csrf_token %}
+
+                {% if item.addons.all %}
+                  <div class="mb-2">
+                    <p class="small fw-bold mb-1">Customize:</p>
+                    {% for addon in item.addons.all %}
+                      <div class="form-check">
+                        <input class="form-check-input addon-checkbox" type="checkbox" name="addons" value="{{ addon.id }}" data-price="{{ addon.price }}" id="addon-{{ addon.id }}">
+                        <label class="form-check-label small" for="addon-{{ addon.id }}">{{ addon.name }} (+₹{{ addon.price }})</label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <div class="d-flex gap-2 align-items-center mb-2">
+                  <button type="button" class="btn btn-outline-secondary btn-sm qty-btn" data-action="minus">−</button>
+                  <input type="number" name="quantity" value="1" min="1" max="20" class="form-control form-control-sm text-center qty-input" style="width:55px;" readonly>
+                  <button type="button" class="btn btn-outline-secondary btn-sm qty-btn" data-action="plus">+</button>
+                </div>
+
+                <p class="small mb-2">Total: <strong class="line-total">₹{{ item.price }}</strong></p>
+                <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+              </form>
+            {% else %}
+              <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-sm">Login to order</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endfor %}
+
+{% if uncategorised %}
+  <h4 class="mt-4">Other Items</h4>
+  <div class="row g-3">
+    {% for item in uncategorised %}
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="fw-bold base-price" data-base-price="{{ item.price }}">₹{{ item.price }}</p>
+            {% if user.is_authenticated and not user.is_staff %}
+              <form method="post" action="{% url 'orders:add_to_cart' item.id %}" class="qty-form">
+                {% csrf_token %}
+                {% if item.addons.all %}
+                  <div class="mb-2">
+                    <p class="small fw-bold mb-1">Customize:</p>
+                    {% for addon in item.addons.all %}
+                      <div class="form-check">
+                        <input class="form-check-input addon-checkbox" type="checkbox" name="addons" value="{{ addon.id }}" data-price="{{ addon.price }}" id="addon-{{ addon.id }}">
+                        <label class="form-check-label small" for="addon-{{ addon.id }}">{{ addon.name }} (+₹{{ addon.price }})</label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <div class="d-flex gap-2 align-items-center mb-2">
+                  <button type="button" class="btn btn-outline-secondary btn-sm qty-btn" data-action="minus">−</button>
+                  <input type="number" name="quantity" value="1" min="1" max="20" class="form-control form-control-sm text-center qty-input" style="width:55px;" readonly>
+                  <button type="button" class="btn btn-outline-secondary btn-sm qty-btn" data-action="plus">+</button>
+                </div>
+                <p class="small mb-2">Total: <strong class="line-total">₹{{ item.price }}</strong></p>
+                <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<script>
+  document.querySelectorAll(".qty-form").forEach(function (form) {
+    const input = form.querySelector(".qty-input");
+    const basePrice = parseFloat(form.closest(".card-body").querySelector(".base-price").dataset.basePrice);
+    const lineTotalEl = form.querySelector(".line-total");
+
+    function recalcTotal() {
+      const qty = parseInt(input.value, 10) || 1;
+      let unitPrice = basePrice;
+      form.querySelectorAll(".addon-checkbox:checked").forEach(function (cb) {
+        unitPrice += parseFloat(cb.dataset.price);
+      });
+      lineTotalEl.textContent = "₹" + (unitPrice * qty).toFixed(2);
+    }
+
+    form.querySelectorAll(".qty-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        let val = parseInt(input.value, 10) || 1;
+        if (btn.dataset.action === "plus") val = Math.min(20, val + 1);
+        else val = Math.max(1, val - 1);
+        input.value = val;
+        recalcTotal();
+      });
+    });
+
+    form.querySelectorAll(".addon-checkbox").forEach(function (cb) {
+      cb.addEventListener("change", recalcTotal);
+    });
+  });
+</script>
+{% endblock %}

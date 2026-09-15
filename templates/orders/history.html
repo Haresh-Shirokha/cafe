@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<h2 class="mb-4">Order History</h2>
+<table class="table bg-white">
+  <thead><tr><th>Bill</th><th>Table</th><th>Status</th><th>Total</th><th></th></tr></thead>
+  <tbody>
+  {% for order in orders %}
+    <tr>
+      <td>{{ order.bill_number }}</td>
+      <td>{{ order.table_number|default:"—" }}</td>
+      <td><span class="badge bg-info text-dark">{{ order.get_status_display }}</span></td>
+      <td>₹{{ order.total_amount }}</td>
+      <td>
+        <a href="{% url 'orders:detail' order.id %}" class="btn btn-sm btn-outline-secondary">View</a>
+        <a href="{% url 'invoices:detail' order.id %}" class="btn btn-sm btn-outline-dark">Invoice</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-muted">No orders yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

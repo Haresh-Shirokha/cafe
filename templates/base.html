@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bombay Chowkk{% endblock %} · Bombay Chowkk</title>
+    <meta name="theme-color" content="#0c0a09">
+    <script>
+      // Applied synchronously in <head> so the page never flashes the wrong
+      // theme before the main stylesheet/JS loads.
+      (function () {
+        try {
+          document.documentElement.setAttribute("data-theme", localStorage.getItem("bc_theme") || "dark");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/favicon-192.png' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon-180.png' %}">
+    {% block extra_head %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/bombaychowk.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ============ SPLASH / INTRO ============ -->
+<div id="bc-splash" data-bc-splash>
+  <img src="{% static 'img/splash_logo.png' %}" alt="Bombay Chowkk">
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="bc-header" data-testid="site-header">
+  <div class="bc-header-inner">
+    <a href="{% url 'pages:home' %}" class="bc-logo" data-testid="logo-link">
+      <img src="{% static 'img/header_logo.png' %}" alt="Bombay Chowkk" class="bc-logo-img">
+    </a>
+
+    <nav class="bc-nav">
+      <a href="{% url 'pages:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+      <a href="{% url 'pages:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+      <a href="{% url 'pages:community' %}" class="{% if request.resolver_match.url_name == 'community' %}active{% endif %}">Community</a>
+
+      <div class="bc-nav-drop" data-bc-dropdown>
+        <a href="{% url 'pages:experiences' %}" data-bc-dropdown-trigger class="{% if request.resolver_match.url_name in 'experiences,weekly_events' or request.resolver_match.app_name == 'menu' %}active{% endif %}">
+          Experiences
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="bc-nav-drop-menu">
+          <a href="{% url 'pages:experiences' %}">Overview</a>
+          <a href="{% url 'pages:weekly_events' %}">Weekly Events</a>
+          <a href="{% url 'menu:list' %}">Khau Galli (Menu)</a>
+        </div>
+      </div>
+
+      {% if user.is_authenticated and not user.is_staff %}
+        <a href="{% url 'menu:list' %}" class="{% if request.resolver_match.app_name == 'menu' %}active{% endif %}" data-testid="nav-menu" style="color:var(--bc-amber-400);">Order Food</a>
+      {% endif %}
+
+      <a href="{% url 'pages:partner' %}" class="{% if request.resolver_match.url_name == 'partner' %}active{% endif %}">Partner</a>
+      <a href="{% url 'pages:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+
+      <div class="bc-nav-drop" data-bc-dropdown>
+        <a href="#" data-bc-dropdown-trigger class="bc-nav-accent">
+          {% if user.is_authenticated %}{{ user.username }}{% else %}Portal{% endif %}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="bc-nav-drop-menu">
+          {% if user.is_authenticated and not user.is_staff %}
+            <a href="{% url 'orders:cart' %}">Cart</a>
+            <a href="{% url 'orders:history' %}">My Orders</a>
+            <a href="{% url 'wallet:home' %}">Wallet <span class="bc-points-pill">{{ user.points }}</span></a>
+            <a href="{% url 'accounts:profile' %}">Profile</a>
+            <a href="{% url 'accounts:logout' %}">Logout</a>
+          {% elif user.is_authenticated and user.is_staff %}
+            <a href="{% url 'dashboard:home' %}">Admin Dashboard</a>
+            <a href="{% url 'accounts:profile' %}">Profile</a>
+            <a href="{% url 'accounts:logout' %}">Logout</a>
+          {% else %}
+            <a href="{% url 'accounts:login_phone_start' %}">Login</a>
+            <a href="{% url 'accounts:signup_phone_start' %}">Sign Up</a>
+            <a href="{% url 'accounts:login' %}">Admin Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <div class="bc-header-right">
+      <button type="button" class="bc-theme-toggle" data-bc-theme-toggle aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+        <svg class="bc-icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="bc-icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      {% if user.is_authenticated %}
+        <a href="{% if user.is_staff %}{% url 'dashboard:home' %}{% else %}{% url 'accounts:profile' %}{% endif %}" class="bc-user-chip" data-testid="header-user-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          {{ user.username|truncatechars:14 }}
+        </a>
+      {% endif %}
+      <button class="bc-burger" data-bc-burger aria-label="Toggle menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="bc-mobile-nav" data-bc-mobile-nav>
+    <div class="bc-mobile-nav-inner">
+      <a href="{% url 'pages:home' %}">Home</a>
+      <a href="{% url 'pages:about' %}">About</a>
+      <a href="{% url 'pages:community' %}">Community</a>
+      <div>
+        <p class="bc-mobile-group-label">Experiences</p>
+        <div class="bc-mobile-sub">
+          <a href="{% url 'pages:experiences' %}">Overview</a>
+          <a href="{% url 'pages:weekly_events' %}">Weekly Events</a>
+          <a href="{% url 'menu:list' %}">Khau Galli (Menu)</a>
+        </div>
+      </div>
+      {% if user.is_authenticated and not user.is_staff %}
+        <a href="{% url 'menu:list' %}" style="color:var(--bc-amber-400);">Order Food</a>
+      {% endif %}
+      <a href="{% url 'pages:partner' %}">Partner</a>
+      <a href="{% url 'pages:contact' %}">Contact</a>
+      <div>
+        <p class="bc-mobile-group-label">{% if user.is_authenticated %}{{ user.username }}{% else %}Portal{% endif %}</p>
+        <div class="bc-mobile-sub">
+          {% if user.is_authenticated and not user.is_staff %}
+            <a href="{% url 'orders:cart' %}">Cart</a>
+            <a href="{% url 'orders:history' %}">My Orders</a>
+            <a href="{% url 'wallet:home' %}">Wallet ({{ user.points }})</a>
+            <a href="{% url 'accounts:profile' %}">Profile</a>
+            <a href="{% url 'accounts:logout' %}">Logout</a>
+          {% elif user.is_authenticated and user.is_staff %}
+            <a href="{% url 'dashboard:home' %}">Admin Dashboard</a>
+            <a href="{% url 'accounts:profile' %}">Profile</a>
+            <a href="{% url 'accounts:logout' %}">Logout</a>
+          {% else %}
+            <a href="{% url 'accounts:login_phone_start' %}">Login</a>
+            <a href="{% url 'accounts:signup_phone_start' %}">Sign Up</a>
+            <a href="{% url 'accounts:login' %}">Admin Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% if messages %}
+  <div class="bc-alerts">
+    {% for message in messages %}
+      <div class="bc-alert {{ message.tags|default:'info' }}" role="alert">
+        <span>{{ message }}</span>
+        <button type="button" data-bc-alert-close aria-label="Dismiss">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- ============ PAGE CONTENT ============ -->
+{% block full_content %}
+<div class="container pb-5">
+  {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
+<!-- ============ FOOTER ============ -->
+{% if request.resolver_match.app_name != 'dashboard' %}
+<footer class="bc-footer" data-testid="site-footer">
+  <div class="bc-footer-grid">
+    <div class="bc-footer-col-5">
+      <h3 class="font-display">Mumbai ki yaari, <br><span class="bc-italic-amber">Mumbai ka swaad.</span></h3>
+      <p class="bc-body bc-mt-6 bc-max-w-2xl">Bombay Chowkk is a living chowk where food, theatre, music and people meet every evening. Built for the city, by the city.</p>
+
+      <form method="post" action="{% url 'pages:newsletter' %}" class="bc-footer-form" data-testid="footer-newsletter-form">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Your email for chowk updates" required data-testid="newsletter-email-input">
+        <button type="submit" data-testid="newsletter-submit-btn">Join</button>
+      </form>
+    </div>
+
+    <div class="bc-footer-col-3">
+      <p class="bc-footer-label">Visit</p>
+      <ul class="bc-footer-list">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="margin-top:.2rem;flex-shrink:0;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Khau Galli Lane,<br>Lower Parel, Mumbai 400013</span>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>+91 98200 00000</span>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg>
+          <span>hello@bombaychowkk.in</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="bc-footer-col-2">
+      <p class="bc-footer-label">Explore</p>
+      <ul class="bc-footer-list">
+        <li><a href="{% url 'pages:experiences' %}" data-testid="footer-link-experiences">Experiences</a></li>
+        <li><a href="{% url 'pages:weekly_events' %}" data-testid="footer-link-events">Weekly Events</a></li>
+        <li><a href="{% url 'pages:partner' %}" data-testid="footer-link-partner">Partner With Us</a></li>
+        <li><a href="{% url 'pages:contact' %}" data-testid="footer-link-contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="bc-footer-col-2">
+      <p class="bc-footer-label">Follow</p>
+      <div class="bc-footer-social">
+        <a href="#" data-testid="social-instagram" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" data-testid="social-youtube" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.5 6.2a2.8 2.8 0 00-2-2C18.9 3.7 12 3.7 12 3.7s-6.9 0-8.5.5a2.8 2.8 0 00-2 2A29 29 0 001 12a29 29 0 00.5 5.8 2.8 2.8 0 002 2c1.6.5 8.5.5 8.5.5s6.9 0 8.5-.5a2.8 2.8 0 002-2A29 29 0 0023 12a29 29 0 00-.5-5.8z"/><path d="M9.8 15.5l5.7-3.5-5.7-3.5v7z"/></svg></a>
+        <a href="#" data-testid="social-facebook" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      </div>
+      <p class="bc-faint bc-mt-6" style="font-size:.75rem;line-height:1.6;">Tag us at<br><span class="bc-amber">#BombayChowkk</span></p>
+    </div>
+  </div>
+
+  <div class="bc-footer-bottom">
+    <div class="bc-footer-bottom-inner">
+      <p>© {% now "Y" %} Bombay Chowkk. Jahan Mumbai zinda hoti hai.</p>
+      <p class="font-accent" style="text-transform:uppercase;letter-spacing:.25em;">Food. Culture. Community.</p>
+    </div>
+  </div>
+</footer>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/bombaychowk.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

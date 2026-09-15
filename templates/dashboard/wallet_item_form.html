@@ -1,0 +1,11 @@
+{% extends "dashboard/_layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block dashboard_title %}{{ title }}{% endblock %}
+{% block dashboard_content %}
+<h2 class="mb-4">{{ title }}</h2>
+<form method="post" enctype="multipart/form-data" class="card p-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary" type="submit">Save</button>
+</form>
+{% endblock %}
